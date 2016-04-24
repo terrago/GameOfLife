@@ -1,6 +1,7 @@
 package de.terrago.gameOfLive.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagLayout;
 
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 
+import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 
 public class MyJFrame extends JFrame {
@@ -27,7 +29,7 @@ public class MyJFrame extends JFrame {
 	private JButton bWest;
 	private JCheckBox checkBoxInfinte;
 	private JComboBox <String>comboBox;
-	private int count = 0;
+
 	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
 	private JPanel jScrollPane;
@@ -103,9 +105,7 @@ public class MyJFrame extends JFrame {
 		return comboBox;
 	}
 
-	public int getCount() {
-		return count;
-	}
+
 
 	public MyDrawPanel getDrawPanel() {
 		return drawPanel;
@@ -143,8 +143,18 @@ public class MyJFrame extends JFrame {
 		this.bSouth = bSouth;
 	}
 
-	public void setCount(int count) {
-		this.count = count;
+	public void setArena(Arena arena,int count) {
+
+		this.getDrawPanel().getPoints().clear();
+		this.getjScrollPane().setBackground(Color.GRAY);
+		this.getDrawPanel().setBackground(Color.WHITE);
+		for (int i = 0; i < arena.getHeight(); i++)
+			for (int j = 0; j < arena.getWidth(); j++) {
+				this.getDrawPanel().getPoints().add(arena.getPoint(j, i));
+			}
+		this.getDrawPanel().repaint();
+		this.getbSouth().setText("Schritt:" + count);
+		this.getDrawPanel().repaint();
 	}
 
 	public void setDrawpanel(MyDrawPanel drawpanel) {

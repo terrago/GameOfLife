@@ -1,6 +1,5 @@
 package de.terrago.gameOfLive.service;
 
-import java.awt.Color;
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.model.Point;
 import de.terrago.gameOfLive.view.MyJFrame;
@@ -8,6 +7,7 @@ import de.terrago.gameOfLive.view.MyJFrame;
 public class GameOfLifeService {
 	private Arena arena;
 	private MyJFrame myJFrame;
+	private int count = 0;
 
 	public GameOfLifeService(Arena arena, MyJFrame myJFrame) {
 		this.arena = arena;
@@ -16,6 +16,10 @@ public class GameOfLifeService {
 
 	public Arena getArena() {
 		return arena;
+	}
+	
+	public int getCount() {
+		return count;
 	}
 
 	private Point[] getNeighbors(Arena arena, Point toBeChecked) {
@@ -47,7 +51,7 @@ public class GameOfLifeService {
 					isAlife = true;
 				ret.setPoint(i, j, isAlife);
 			}
-		myJFrame.setCount(myJFrame.getCount() + 1);
+		this.count++;
 		return ret;
 	}
 
@@ -66,15 +70,9 @@ public class GameOfLifeService {
 
 	public void setArena(Arena arena) {
 		this.arena = arena;
-		myJFrame.getDrawPanel().getPoints().clear();
-		myJFrame.getjScrollPane().setBackground(Color.GRAY);
-		myJFrame.getDrawPanel().setBackground(Color.WHITE);
-		for (int i = 0; i < arena.getHeight(); i++)
-			for (int j = 0; j < arena.getWidth(); j++) {
-				myJFrame.getDrawPanel().getPoints().add(arena.getPoint(j, i));
-			}
-		myJFrame.getDrawPanel().repaint();
-		myJFrame.getbSouth().setText("Schritt:" + myJFrame.getCount());
-		myJFrame.getDrawPanel().repaint();
+		
+	}
+	public void setCount(int count) {
+		this.count = count;
 	}
 }

@@ -29,7 +29,6 @@ public class MyActionListener implements ActionListener, ChangeListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
 		if (ae.getSource() == myJFrame.getbNorth()) {
 			myJFrame.getTimer().start();
 		}
@@ -64,7 +63,7 @@ public class MyActionListener implements ActionListener, ChangeListener {
 			default:
 				break;
 			}
-			myJFrame.setCount(0);
+			gameOfLifeService.setCount(0);
 			myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSliderSize().getValue());
 			myJFrame.getDrawPanel()
 					.setPreferredSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
@@ -74,18 +73,21 @@ public class MyActionListener implements ActionListener, ChangeListener {
 			myJFrame.getDrawPanel()
 					.setMaximumSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
 							arena.getHeight() * myJFrame.getjSliderSize().getValue()));
+			gameOfLifeService.setArena(arena);
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCount());
 			myJFrame.getDrawPanel().update(myJFrame.getDrawPanel().getGraphics());
 			myJFrame.getjScrollPane().update(myJFrame.getjScrollPane().getGraphics());
 			myJFrame.getDrawPanel().repaint();
 			myJFrame.paintAll(myJFrame.getGraphics());
-
-			gameOfLifeService.setArena(arena);
 		}
 		if (ae.getSource() == myJFrame.getbWest()) {
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCount());
+			
 		}
 		if (ae.getSource() == myJFrame.getTimer()) {
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCount());
 		}
 	}
 
