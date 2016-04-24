@@ -7,7 +7,6 @@ public class Arena {
 	private int width;
 
 	public Arena(int width, int height) {
-
 		this.width = width;
 		this.height = height;
 		points = new Point[width][height];
