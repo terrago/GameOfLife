@@ -1,8 +1,8 @@
 package de.terrago.gameOfLive;
+
 import javax.swing.UIManager;
 
 import de.terrago.gameOfLive.model.Arena;
-import de.terrago.gameOfLive.model.Point;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 import de.terrago.gameOfLive.view.MyJFrame;
 
@@ -14,12 +14,8 @@ public class GameOfLife {
 		} catch (Exception evt) {
 		}
 		Arena arena = new Arena(150, 150, false);
-
 		MyJFrame myJFrame = new MyJFrame();
-
 		GameOfLifeService gameOfLifeService = new GameOfLifeService(arena, myJFrame);
 		myJFrame.setGameOfLifeService(gameOfLifeService);
-		myJFrame.getDrawPanel().repaint();
 	}
-
 }

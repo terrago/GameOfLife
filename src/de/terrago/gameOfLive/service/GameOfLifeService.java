@@ -1,16 +1,12 @@
 package de.terrago.gameOfLive.service;
 
 import java.awt.Color;
-import java.awt.Dimension;
-
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.model.Point;
 import de.terrago.gameOfLive.view.MyJFrame;
 
 public class GameOfLifeService {
-
 	private Arena arena;
-	int delay = 100; // milliseconds
 	private MyJFrame myJFrame;
 
 	public GameOfLifeService(Arena arena, MyJFrame myJFrame) {
@@ -20,10 +16,6 @@ public class GameOfLifeService {
 
 	public Arena getArena() {
 		return arena;
-	}
-
-	public int getDelay() {
-		return delay;
 	}
 
 	private Point[] getNeighbors(Arena arena, Point toBeChecked) {
@@ -44,7 +36,6 @@ public class GameOfLifeService {
 
 	public Arena getNextGeneration(Arena arena) {
 		Arena ret = new Arena(arena.getWidth(), arena.getHeight(), myJFrame.getCheckBoxInfinte().isSelected());
-		
 		for (int i = 0; i < arena.getWidth(); i++)
 			for (int j = 0; j < arena.getHeight(); j++) {
 				Point toBeChecked = arena.getPoint(i, j);
@@ -86,9 +77,4 @@ public class GameOfLifeService {
 		myJFrame.getbSouth().setText("Schritt:" + myJFrame.getCount());
 		myJFrame.getDrawPanel().repaint();
 	}
-
-	public void setDelay(int delay) {
-		this.delay = delay;
-	}
-
 }

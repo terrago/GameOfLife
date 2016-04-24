@@ -2,17 +2,9 @@ package de.terrago.gameOfLive.model;
 
 public class Arena {
 	private int height;
+	private boolean infinteWorld;
 	private Point[][] points;
 	private int width;
-	private boolean infinteWorld;
-
-	public boolean isInfinteWorld() {
-		return infinteWorld;
-	}
-
-	public void setInfinteWorld(boolean infinteWorld) {
-		this.infinteWorld = infinteWorld;
-	}
 
 	public Arena(int width, int height, boolean infinteWorld) {
 		this.infinteWorld = infinteWorld;
@@ -38,7 +30,7 @@ public class Arena {
 					x = x + (width - 1);
 				if (x >= width - 1)
 					x = x - (width - 1);
-				
+
 				if (y < 0)
 					y = y + (height - 1);
 				if (y >= height - 1)
@@ -58,8 +50,16 @@ public class Arena {
 		return width;
 	}
 
+	public boolean isInfinteWorld() {
+		return infinteWorld;
+	}
+
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public void setInfinteWorld(boolean infinteWorld) {
+		this.infinteWorld = infinteWorld;
 	}
 
 	public void setPoint(int x, int y, boolean alife) {

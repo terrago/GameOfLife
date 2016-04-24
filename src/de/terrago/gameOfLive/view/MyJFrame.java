@@ -20,7 +20,7 @@ import de.terrago.gameOfLive.service.GameOfLifeService;
 public class MyJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	private JButton bEast;
 	private JButton bNorth;
 	private JButton bSouth;
@@ -33,14 +33,10 @@ public class MyJFrame extends JFrame {
 	private JPanel jScrollPane;
 	private JSlider jSliderSize;
 	private JSlider jSliderSpeed;
-	private JTextField jTextFieldWidth;
 	private JTextField jTextFieldHeight;
-
-
+	private JTextField jTextFieldWidth;
 	private JPanel panelButtons;
-
 	private JSplitPane splitPaneH;
-
 	private JSplitPane splitPaneV;
 	private Timer timer;
 
@@ -95,14 +91,6 @@ public class MyJFrame extends JFrame {
 		panelButtons.add(panelCenter, BorderLayout.CENTER);
 	}
 
-	public JTextField getjTextFieldWidth() {
-		return jTextFieldWidth;
-	}
-
-	public JTextField getjTextFieldHeight() {
-		return jTextFieldHeight;
-	}
-
 	public JButton getbEast() {
 		return bEast;
 	}
@@ -149,6 +137,14 @@ public class MyJFrame extends JFrame {
 
 	public JSlider getjSliderSpeed() {
 		return jSliderSpeed;
+	}
+
+	public JTextField getjTextFieldHeight() {
+		return jTextFieldHeight;
+	}
+
+	public JTextField getjTextFieldWidth() {
+		return jTextFieldWidth;
 	}
 
 	public Timer getTimer() {
@@ -201,7 +197,7 @@ public class MyJFrame extends JFrame {
 		bWest.addActionListener(new MyActionListener(gameOfLifeService, this));
 	    jSliderSize.addChangeListener(new MyActionListener(gameOfLifeService, this));
 	    jSliderSpeed.addChangeListener(new MyActionListener(gameOfLifeService, this));
-		timer = new Timer(gameOfLifeService.getDelay(), new MyActionListener(gameOfLifeService, this));
+		timer = new Timer(100, new MyActionListener(gameOfLifeService, this));
 		this.validate();
 		this.pack();
 		this.setVisible(true);

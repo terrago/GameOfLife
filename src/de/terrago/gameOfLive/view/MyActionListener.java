@@ -8,24 +8,23 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.terrago.gameOfLive.model.Arena;
-import de.terrago.gameOfLive.service.ArenaFactoryService;
+import de.terrago.gameOfLive.service.ArenaModifierService;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 
 public class MyActionListener implements ActionListener, ChangeListener {
 
+	private ArenaModifierService arenaModifierService;
 	private GameOfLifeService gameOfLifeService;
 	private MyJFrame myJFrame;
 	private int startingPointX;
 	private int startingPointY;
-	private ArenaFactoryService arenaFactoryService;
 
 	public MyActionListener(GameOfLifeService gameOfLifeService, MyJFrame myJFrame) {
 		this.gameOfLifeService = gameOfLifeService;
 		this.myJFrame = myJFrame;
 		this.startingPointX = gameOfLifeService.getArena().getWidth() / 2;
 		this.startingPointY = gameOfLifeService.getArena().getHeight() / 2;
-		arenaFactoryService = new ArenaFactoryService();
-
+		arenaModifierService = new ArenaModifierService();
 	}
 
 	@Override
@@ -51,16 +50,16 @@ public class MyActionListener implements ActionListener, ChangeListener {
 			String selectedValue = myJFrame.getComboBox().getSelectedItem().toString();
 			switch (selectedValue) {
 			case "r-Pentomino":
-				arena = arenaFactoryService.getRPentomino(arena, startingPointX, startingPointY);
+				arena = arenaModifierService.getRPentomino(arena, startingPointX, startingPointY);
 				break;
 			case "double-u":
-				arena = arenaFactoryService.getDoubleU(arena, startingPointX, startingPointY);
+				arena = arenaModifierService.getDoubleU(arena, startingPointX, startingPointY);
 				break;
 			case "blinker":
-				arena = arenaFactoryService.getBlinker(arena, startingPointX, startingPointY);
+				arena = arenaModifierService.getBlinker(arena, startingPointX, startingPointY);
 				break;
 			case "lwss":
-				arena = arenaFactoryService.getLwss(arena, startingPointX, startingPointY);
+				arena = arenaModifierService.getLwss(arena, startingPointX, startingPointY);
 				break;
 			default:
 				break;
