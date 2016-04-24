@@ -14,13 +14,19 @@ import de.terrago.gameOfLive.model.Point;
 public class MyDrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Set<Point> points = new HashSet<Point>();
+	int sizefactor = 2;
 
 	public MyDrawPanel(int width, int height) {
 		super.setPreferredSize(new Dimension(width, height));
 		super.setLayout(new BorderLayout());
 	}
+
 	public Set<Point> getPoints() {
 		return points;
+	}
+
+	public int getSizefactor() {
+		return sizefactor;
 	}
 
 	@Override
@@ -29,10 +35,15 @@ public class MyDrawPanel extends JPanel {
 		g.setColor(Color.black);
 		for (Point point : points) {
 			if (point.isAlife())
-				g.drawRect((int) point.getX(), (int) point.getY(), 1, 1);
+				g.drawRect(point.getX() * sizefactor, point.getY() * sizefactor, sizefactor * 1, sizefactor);
 		}
 	}
+
 	public void setPoints(Set<Point> points) {
 		this.points = points;
+	}
+
+	public void setSizefactor(int sizefactor) {
+		this.sizefactor = sizefactor;
 	}
 }

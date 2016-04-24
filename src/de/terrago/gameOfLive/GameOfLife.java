@@ -21,7 +21,7 @@ public class GameOfLife {
 		// points[100][101].setAlife(true);
 		// points[100][102].setAlife(true);
 
-		Arena arena = new Arena(300, 300);
+		Arena arena = new Arena(150, 150);
 
 		MyJFrame myJFrame = new MyJFrame();
 

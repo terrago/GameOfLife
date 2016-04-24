@@ -9,8 +9,8 @@ public class Arena {
 		this.width = width;
 		this.height = height;
 		points = new Point[width][height];
-		for (int i = 0; i < height; i++)
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++) {
 				points[i][j] = new Point(i, j);
 			}
 	}

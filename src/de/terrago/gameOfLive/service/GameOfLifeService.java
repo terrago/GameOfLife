@@ -40,20 +40,17 @@ public class GameOfLifeService {
 	}
 
 	public Arena getNextGeneration(Arena arena) {
-
-		// initialize empty return array of same size
 		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
-
 		for (int i = 0; i < arena.getWidth(); i++)
 			for (int j = 0; j < arena.getHeight(); j++) {
 				Point toBeChecked = arena.getPoint(i, j);
-				Point newPoint = new Point(i, j);
+				boolean isAlife = false;
 				int numberOfNeighbors = getNumberofNeighbors(arena, toBeChecked);
 				if (toBeChecked.isAlife() && numberOfNeighbors < 4 && numberOfNeighbors > 1)
-					newPoint.setAlife(true);
+					isAlife = true;
 				if (!toBeChecked.isAlife() && numberOfNeighbors == 3)
-					newPoint.setAlife(true);
-				ret.setPoint(newPoint.getX(), newPoint.getY(), newPoint.isAlife());
+					isAlife = true;
+				ret.setPoint(i, j, isAlife);
 			}
 		myJFrame.setCount(myJFrame.getCount() + 1);
 		return ret;
@@ -77,7 +74,7 @@ public class GameOfLifeService {
 		myJFrame.getDrawPanel().getPoints().clear();
 		for (int i = 0; i < arena.getHeight(); i++)
 			for (int j = 0; j < arena.getWidth(); j++) {
-				myJFrame.getDrawPanel().getPoints().add(arena.getPoint(i, j));
+				myJFrame.getDrawPanel().getPoints().add(arena.getPoint(j, i));
 			}
 		myJFrame.getDrawPanel().repaint();
 		myJFrame.getbSouth().setText("Schritt:" + myJFrame.getCount());

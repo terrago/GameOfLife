@@ -10,10 +10,14 @@ public class MyActionListener implements ActionListener {
 
 	private GameOfLifeService gameOfLifeService;
 	private MyJFrame myJFrame;
+	private int startingPointX;
+	private int startingPointY;
 
 	public MyActionListener(GameOfLifeService gameOfLifeService, MyJFrame myJFrame) {
 		this.gameOfLifeService = gameOfLifeService;
 		this.myJFrame = myJFrame;
+		this.startingPointX = gameOfLifeService.getArena().getWidth() / 2;
+		this.startingPointY = gameOfLifeService.getArena().getHeight() / 2;
 	}
 
 	@Override
@@ -26,44 +30,50 @@ public class MyActionListener implements ActionListener {
 			myJFrame.getTimer().stop();
 		}
 		if (ae.getSource() == myJFrame.getComboBox()) {
-			
+
 		}
 		if (ae.getSource() == myJFrame.getbEast()) {
 			myJFrame.getTimer().stop();
-			Arena arena = new Arena(300, 300);
-			String selectedValue =   myJFrame.getComboBox().getSelectedItem().toString();
-			switch (selectedValue){
-			case"r-Pentomino":
-				arena.setPoint(99, 101, true);
-				arena.setPoint(100, 100, true);
-				arena.setPoint(100, 101, true);
-				arena.setPoint(100, 102, true);
-				arena.setPoint(101, 100, true);
-			break;
+			Arena arena = new Arena(myJFrame.getDrawPanel().getWidth() / myJFrame.getjSlider().getValue(),
+					myJFrame.getDrawPanel().getHeight() / myJFrame.getjSlider().getValue());
+
+			myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSlider().getValue());
+
+			this.startingPointX = arena.getWidth() / 2;
+			this.startingPointY = arena.getHeight() / 2;
+
+			String selectedValue = myJFrame.getComboBox().getSelectedItem().toString();
+			switch (selectedValue) {
+			case "r-Pentomino":
+				arena.setPoint(startingPointX - 1, startingPointY + 1, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 0, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 1, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 2, true);
+				arena.setPoint(startingPointX + 1, startingPointY + 0, true);
+				break;
 			case "double-u":
-				arena.setPoint(100, 100, true);
-				arena.setPoint(101, 100, true);
-				arena.setPoint(102, 100, true);
-				arena.setPoint(100, 101, true);				
-				arena.setPoint(102, 101, true);
-				arena.setPoint(100, 102, true);				
-				arena.setPoint(102, 102, true);
-				
-				arena.setPoint(100, 104, true);				
-				arena.setPoint(102, 104, true);
-				arena.setPoint(100, 105, true);				
-				arena.setPoint(102, 105, true);
-				arena.setPoint(100, 106, true);
-				arena.setPoint(101, 106, true);
-				arena.setPoint(102, 106, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 0, true);
+				arena.setPoint(startingPointX + 1, startingPointY + 0, true);
+				arena.setPoint(startingPointX + 2, startingPointY + 0, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 1, true);
+				arena.setPoint(startingPointX + 2, startingPointY + 1, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 2, true);
+				arena.setPoint(startingPointX + 2, startingPointY + 2, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 4, true);
+				arena.setPoint(startingPointX + 2, startingPointY + 4, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 5, true);
+				arena.setPoint(startingPointX + 2, startingPointY + 5, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 6, true);
+				arena.setPoint(startingPointX + 1, startingPointY + 6, true);
+				arena.setPoint(startingPointX + 2, startingPointY + 6, true);
 				break;
 			default:
-				arena.setPoint(99, 101, true);
-				arena.setPoint(100, 100, true);
-				arena.setPoint(100, 101, true);
-				arena.setPoint(100, 102, true);
-				arena.setPoint(101, 100, true);	
-			break;
+				arena.setPoint(startingPointX - 1, startingPointY + 1, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 0, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 1, true);
+				arena.setPoint(startingPointX + 0, startingPointY + 2, true);
+				arena.setPoint(startingPointX + 1, startingPointY + 0, true);
+				break;
 			}
 			myJFrame.setCount(0);
 			gameOfLifeService.setArena(arena);
