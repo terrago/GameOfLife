@@ -46,14 +46,9 @@ public class GameOfLifeService {
 
 		for (int i = 0; i < arena.getWidth(); i++)
 			for (int j = 0; j < arena.getHeight(); j++) {
-				int numberOfNeighbors = 0;
 				Point toBeChecked = arena.getPoint(i, j);
 				Point newPoint = new Point(i, j);
-				// Create array neighbors
-				Point[] neighbors = getNeighbors(arena, toBeChecked);
-				for (int k = 0; k < neighbors.length; k++)
-					if (neighbors[k] != null && neighbors[k].isAlife())
-						numberOfNeighbors++;
+				int numberOfNeighbors = getNumberofNeighbors(arena, toBeChecked);
 				if (toBeChecked.isAlife() && numberOfNeighbors < 4 && numberOfNeighbors > 1)
 					newPoint.setAlife(true);
 				if (!toBeChecked.isAlife() && numberOfNeighbors == 3)
@@ -62,6 +57,15 @@ public class GameOfLifeService {
 			}
 		myJFrame.setCount(myJFrame.getCount() + 1);
 		return ret;
+	}
+
+	private int getNumberofNeighbors(Arena arena, Point toBeChecked) {
+		int numberOfNeighbors = 0;
+		Point[] neighbors = getNeighbors(arena, toBeChecked);
+		for (int k = 0; k < neighbors.length; k++)
+			if (neighbors[k] != null && neighbors[k].isAlife())
+				numberOfNeighbors++;
+		return numberOfNeighbors;
 	}
 
 	public Point[][] getPoints() {

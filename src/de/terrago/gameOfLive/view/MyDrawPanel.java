@@ -11,11 +11,11 @@ import javax.swing.JPanel;
 
 import de.terrago.gameOfLive.model.Point;
 
-public class DrawPanel extends JPanel {
+public class MyDrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Set<Point> points = new HashSet<Point>();
 
-	public DrawPanel(int width, int height) {
+	public MyDrawPanel(int width, int height) {
 		super.setPreferredSize(new Dimension(width, height));
 		super.setLayout(new BorderLayout());
 	}

@@ -1,3 +1,4 @@
+package de.terrago.gameOfLive;
 import javax.swing.UIManager;
 
 import de.terrago.gameOfLive.model.Arena;
@@ -21,11 +22,6 @@ public class GameOfLife {
 		// points[100][102].setAlife(true);
 
 		Arena arena = new Arena(300, 300);
-		arena.setPoint(99, 101, true);
-		arena.setPoint(100, 100, true);
-		arena.setPoint(100, 101, true);
-		arena.setPoint(100, 102, true);
-		arena.setPoint(101, 100, true);
 
 		MyJFrame myJFrame = new MyJFrame();
 

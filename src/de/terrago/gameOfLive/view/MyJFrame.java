@@ -23,7 +23,7 @@ public class MyJFrame extends JFrame {
 	private JComboBox comboBox;
 	private int count = 0;
 
-	private DrawPanel drawPanel;
+	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
 	private JPanel panel1;
 	private JSplitPane splitPaneH;
@@ -50,7 +50,7 @@ public class MyJFrame extends JFrame {
 		panel1.add(bWest, BorderLayout.WEST);
 		
 		//panel1.add(new JButton("West"), BorderLayout.WEST);
-		String[] options = { "Option1", "Option2", "Option3", "Option4", "Option15" };
+		String[] options = { "r-Pentomino", "double-u", "Option3", "Option4", "Option15" };
 		comboBox = new JComboBox(options);
 
 		panel1.add(comboBox, BorderLayout.CENTER);
@@ -81,7 +81,7 @@ public class MyJFrame extends JFrame {
 		return count;
 	}
 
-	public DrawPanel getDrawPanel() {
+	public MyDrawPanel getDrawPanel() {
 		return drawPanel;
 	}
 
@@ -104,7 +104,7 @@ public class MyJFrame extends JFrame {
 		this.timer = timer;
 	}
 
-	public void setDrawpanel(DrawPanel drawpanel) {
+	public void setDrawpanel(MyDrawPanel drawpanel) {
 		this.drawPanel = drawpanel;
 	}
 	public void setGameOfLifeService(GameOfLifeService gameOfLifeService) {
@@ -115,7 +115,7 @@ public class MyJFrame extends JFrame {
 		getContentPane().add(topPanel);
 		// Create the panels
 		createPanel1();
-		drawPanel = new DrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
+		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
 		// Create a splitter pane
 		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		topPanel.add(splitPaneV, BorderLayout.CENTER);
