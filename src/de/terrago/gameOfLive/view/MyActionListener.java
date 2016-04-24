@@ -19,13 +19,23 @@ public class MyActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 
 		if (ae.getSource() == myJFrame.getbNorth()) {
-			gameOfLifeService.getTimer().start();
+			myJFrame.getTimer().start();
 		}
 		if (ae.getSource() == myJFrame.getbSouth()) {
-			gameOfLifeService.getTimer().stop();
+			myJFrame.getTimer().stop();
 		}
 		if (ae.getSource() == myJFrame.getComboBox()) {
 
+		}
+		if (ae.getSource() == myJFrame.getbEast()) {
+			myJFrame.getTimer().stop();
+			gameOfLifeService.setArena(gameOfLifeService.getArena());
+		}
+		if (ae.getSource() == myJFrame.getbWest()) {
+			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
+		}
+		if (ae.getSource() == myJFrame.getTimer()) {
+			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
 		}
 	}
 }

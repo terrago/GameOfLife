@@ -1,9 +1,9 @@
 package de.terrago.gameOfLive.model;
 
 public class Arena {
-	private int width;
 	private int height;
 	private Point[][] points;
+	private int width;
 
 	public Arena(int width, int height) {
 		this.width = width;
@@ -15,6 +15,10 @@ public class Arena {
 			}
 	}
 
+	public int getHeight() {
+		return height;
+	}
+
 	public Point getPoint(int x, int y) {
 		if (x < width - 1 && x > -1 && y < height - 1 && y > -1)
 			return points[x][y];
@@ -22,31 +26,27 @@ public class Arena {
 			return new Point(x, y);
 	}
 
-	public void setPoint(int x, int y, boolean alife) {
-		points[x][y].setAlife(alife);
+	public Point[][] getPoints() {
+		return points;
 	}
 
 	public int getWidth() {
 		return width;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
 	public void setHeight(int height) {
 		this.height = height;
 	}
 
-	public Point[][] getPoints() {
-		return points;
+	public void setPoint(int x, int y, boolean alife) {
+		points[x][y].setAlife(alife);
 	}
 
 	public void setPoints(Point[][] points) {
 		this.points = points;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 }
