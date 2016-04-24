@@ -1,5 +1,8 @@
 package de.terrago.gameOfLive.service;
 
+import java.awt.Color;
+import java.awt.Dimension;
+
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.model.Point;
 import de.terrago.gameOfLive.view.MyJFrame;
@@ -72,12 +75,16 @@ public class GameOfLifeService {
 	public void setArena(Arena arena) {
 		this.arena = arena;
 		myJFrame.getDrawPanel().getPoints().clear();
+		myJFrame.getjScrollPane().setBackground(Color.GRAY);
+		myJFrame.getDrawPanel().setBackground(Color.WHITE);
 		for (int i = 0; i < arena.getHeight(); i++)
 			for (int j = 0; j < arena.getWidth(); j++) {
 				myJFrame.getDrawPanel().getPoints().add(arena.getPoint(j, i));
 			}
 		myJFrame.getDrawPanel().repaint();
+//		myJFrame.paintAll(myJFrame.getGraphics());
 		myJFrame.getbSouth().setText("Schritt:" + myJFrame.getCount());
+		myJFrame.getDrawPanel().repaint();
 	}
 
 	public void setDelay(int delay) {

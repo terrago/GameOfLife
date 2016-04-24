@@ -1,5 +1,6 @@
 package de.terrago.gameOfLive.view;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,11 +35,12 @@ public class MyActionListener implements ActionListener {
 		}
 		if (ae.getSource() == myJFrame.getbEast()) {
 			myJFrame.getTimer().stop();
-			Arena arena = new Arena(myJFrame.getDrawPanel().getWidth() / myJFrame.getjSlider().getValue(),
-					myJFrame.getDrawPanel().getHeight() / myJFrame.getjSlider().getValue());
+//			Arena arena = new Arena(myJFrame.getDrawPanel().getWidth() / myJFrame.getjSlider().getValue(),
+//					myJFrame.getDrawPanel().getHeight() / myJFrame.getjSlider().getValue());
+			
+			Arena arena = new Arena(150,150);
 
-			myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSlider().getValue());
-
+			
 			this.startingPointX = arena.getWidth() / 2;
 			this.startingPointY = arena.getHeight() / 2;
 
@@ -76,6 +78,15 @@ public class MyActionListener implements ActionListener {
 				break;
 			}
 			myJFrame.setCount(0);
+			myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSlider().getValue());
+			myJFrame.getDrawPanel().setPreferredSize(new Dimension(arena.getWidth()*myJFrame.getjSlider().getValue(),arena.getHeight()*myJFrame.getjSlider().getValue()));
+			myJFrame.getDrawPanel().setSize(new Dimension(arena.getWidth()*myJFrame.getjSlider().getValue(),arena.getHeight()*myJFrame.getjSlider().getValue()));
+			myJFrame.getDrawPanel().setMaximumSize(new Dimension(arena.getWidth()*myJFrame.getjSlider().getValue(),arena.getHeight()*myJFrame.getjSlider().getValue()));
+			myJFrame.getDrawPanel().update(myJFrame.getDrawPanel().getGraphics());
+			myJFrame.getjScrollPane().update(myJFrame.getjScrollPane().getGraphics());
+			myJFrame.getDrawPanel().repaint();
+			myJFrame.paintAll(myJFrame.getGraphics());
+			
 			gameOfLifeService.setArena(arena);
 		}
 		if (ae.getSource() == myJFrame.getbWest()) {

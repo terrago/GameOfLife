@@ -1,14 +1,17 @@
 package de.terrago.gameOfLive.view;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.Timer;
+import javax.swing.border.TitledBorder;
 
 import de.terrago.gameOfLive.service.GameOfLifeService;
 
@@ -25,6 +28,7 @@ public class MyJFrame extends JFrame {
 	private JPanel panel1;
 	private JSplitPane splitPaneH;
 	private JSplitPane splitPaneV;
+	private JPanel jScrollPane;
 
 	private int count = 0;
 	private MyDrawPanel drawPanel;
@@ -122,6 +126,7 @@ public class MyJFrame extends JFrame {
 		getContentPane().add(topPanel);
 		// Create the panels
 		createPanel1();
+		//JScrollPane scrollPane = new JScrollPane(textArea);
 		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
 		// Create a splitter pane
 		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -142,10 +147,11 @@ public class MyJFrame extends JFrame {
 		splitPaneH = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPaneH.setLeftComponent(panel1);
 		splitPaneV.setTopComponent(splitPaneH);
-		splitPaneV.setBottomComponent(drawPanel);
-		splitPaneV.validate();
-		this.pack();
-		this.setVisible(true);
+		
+		jScrollPane = new JPanel();
+		jScrollPane.setLayout(new GridBagLayout());
+		jScrollPane.add(drawPanel);
+		splitPaneV.setBottomComponent(new JScrollPane(jScrollPane));
 		comboBox.addActionListener(new MyActionListener(gameOfLifeService, this));
 		bNorth.addActionListener(new MyActionListener(gameOfLifeService, this));
 		bSouth.addActionListener(new MyActionListener(gameOfLifeService, this));
@@ -153,6 +159,14 @@ public class MyJFrame extends JFrame {
 		bWest.addActionListener(new MyActionListener(gameOfLifeService, this));
 		//jSlider.addActionListener(new MyActionListener(gameOfLifeService, this);
 		timer = new Timer(gameOfLifeService.getDelay(), new MyActionListener(gameOfLifeService, this));
+		this.validate();
+		this.pack();
+		this.setVisible(true);
+		this.repaint();
+	}
+
+	public JPanel getjScrollPane() {
+		return jScrollPane;
 	}
 
 	public void setTimer(Timer timer) {
