@@ -2,24 +2,21 @@ package de.terrago.gameOfLive.service;
 
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.model.Point;
-import de.terrago.gameOfLive.view.MyJFrame;
 
 public class GameOfLifeService {
 	private Arena arena;
-	private MyJFrame myJFrame;
-	private int count = 0;
+	private int countGeneration = 0;
 
-	public GameOfLifeService(Arena arena, MyJFrame myJFrame) {
-		this.arena = arena;
-		this.myJFrame = myJFrame;
+	public GameOfLifeService() {
+		arena = new Arena(150, 150);
 	}
 
 	public Arena getArena() {
 		return arena;
 	}
 	
-	public int getCount() {
-		return count;
+	public int getCountGeneration() {
+		return countGeneration;
 	}
 
 	private Point[] getNeighbors(Arena arena, Point toBeChecked) {
@@ -39,7 +36,8 @@ public class GameOfLifeService {
 	}
 
 	public Arena getNextGeneration(Arena arena) {
-		Arena ret = new Arena(arena.getWidth(), arena.getHeight(), myJFrame.getCheckBoxInfinte().isSelected());
+		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
+		ret.setInfinteWorld(arena.isInfinteWorld());
 		for (int i = 0; i < arena.getWidth(); i++)
 			for (int j = 0; j < arena.getHeight(); j++) {
 				Point toBeChecked = arena.getPoint(i, j);
@@ -51,7 +49,7 @@ public class GameOfLifeService {
 					isAlife = true;
 				ret.setPoint(i, j, isAlife);
 			}
-		this.count++;
+		this.countGeneration++;
 		return ret;
 	}
 
@@ -70,9 +68,8 @@ public class GameOfLifeService {
 
 	public void setArena(Arena arena) {
 		this.arena = arena;
-		
 	}
-	public void setCount(int count) {
-		this.count = count;
+	public void setCountGeneration(int count) {
+		this.countGeneration = count;
 	}
 }

@@ -41,8 +41,9 @@ public class MyActionListener implements ActionListener, ChangeListener {
 		if (ae.getSource() == myJFrame.getbEast()) {
 			myJFrame.getTimer().stop();
 			Arena arena = new Arena((int) Integer.parseInt(myJFrame.getjTextFieldWidth().getText()),
-					(int) Integer.parseInt(myJFrame.getjTextFieldHeight().getText()),
-					myJFrame.getCheckBoxInfinte().isSelected());
+					(int) Integer.parseInt(myJFrame.getjTextFieldHeight().getText())
+					);
+			arena.setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
 			this.startingPointX = arena.getWidth() / 2;
 			this.startingPointY = arena.getHeight() / 2;
 
@@ -63,7 +64,7 @@ public class MyActionListener implements ActionListener, ChangeListener {
 			default:
 				break;
 			}
-			gameOfLifeService.setCount(0);
+			gameOfLifeService.setCountGeneration(0);
 			myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSliderSize().getValue());
 			myJFrame.getDrawPanel()
 					.setPreferredSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
@@ -74,20 +75,22 @@ public class MyActionListener implements ActionListener, ChangeListener {
 					.setMaximumSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
 							arena.getHeight() * myJFrame.getjSliderSize().getValue()));
 			gameOfLifeService.setArena(arena);
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCount());
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
 			myJFrame.getDrawPanel().update(myJFrame.getDrawPanel().getGraphics());
 			myJFrame.getjScrollPane().update(myJFrame.getjScrollPane().getGraphics());
 			myJFrame.getDrawPanel().repaint();
 			myJFrame.paintAll(myJFrame.getGraphics());
 		}
 		if (ae.getSource() == myJFrame.getbWest()) {
+			gameOfLifeService.getArena().setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCount());
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
 			
 		}
 		if (ae.getSource() == myJFrame.getTimer()) {
+			gameOfLifeService.getArena().setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCount());
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
 		}
 	}
 

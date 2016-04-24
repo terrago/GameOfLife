@@ -22,13 +22,13 @@ import de.terrago.gameOfLive.service.GameOfLifeService;
 public class MyJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JButton bEast;
 	private JButton bNorth;
 	private JButton bSouth;
 	private JButton bWest;
 	private JCheckBox checkBoxInfinte;
-	private JComboBox <String>comboBox;
+	private JComboBox<String> comboBox;
 
 	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
@@ -42,6 +42,45 @@ public class MyJFrame extends JFrame {
 	private JSplitPane splitPaneV;
 	private Timer timer;
 
+	public MyJFrame(GameOfLifeService gameOfLifeService) {
+		this.gameOfLifeService = gameOfLifeService;
+		setTitle("Game of Life");
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BorderLayout());
+		getContentPane().add(topPanel);
+		createPanelButtons();
+		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
+		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		topPanel.add(splitPaneV, BorderLayout.CENTER);
+		jSliderSize = new JSlider(1, 5, 1);
+		jSliderSize.setMajorTickSpacing(1);
+		jSliderSize.setMinorTickSpacing(1);
+		jSliderSize.createStandardLabels(1);
+		jSliderSize.setPaintTicks(true);
+		jSliderSize.setPaintLabels(true);
+		jSliderSize.setBorder(new TitledBorder("size factor"));
+		topPanel.add(jSliderSize, BorderLayout.SOUTH);
+		splitPaneH = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPaneH.setLeftComponent(panelButtons);
+		splitPaneV.setTopComponent(splitPaneH);
+		jScrollPane = new JPanel();
+		jScrollPane.setLayout(new GridBagLayout());
+		jScrollPane.add(drawPanel);
+		splitPaneV.setBottomComponent(new JScrollPane(jScrollPane));
+		comboBox.addActionListener(new MyActionListener(gameOfLifeService, this));
+		bNorth.addActionListener(new MyActionListener(gameOfLifeService, this));
+		bSouth.addActionListener(new MyActionListener(gameOfLifeService, this));
+		bEast.addActionListener(new MyActionListener(gameOfLifeService, this));
+		bWest.addActionListener(new MyActionListener(gameOfLifeService, this));
+		jSliderSize.addChangeListener(new MyActionListener(gameOfLifeService, this));
+		jSliderSpeed.addChangeListener(new MyActionListener(gameOfLifeService, this));
+		timer = new Timer(100, new MyActionListener(gameOfLifeService, this));
+		this.validate();
+		this.pack();
+		this.setVisible(true);
+		this.repaint();
+	}
+
 	public void createPanelButtons() {
 		panelButtons = new JPanel();
 		panelButtons.setLayout(new BorderLayout());
@@ -53,10 +92,10 @@ public class MyJFrame extends JFrame {
 		panelButtons.add(bEast, BorderLayout.EAST);
 		bWest = new JButton("Step");
 		panelButtons.add(bWest, BorderLayout.WEST);
-		JPanel panelCenter = new JPanel(); 
+		JPanel panelCenter = new JPanel();
 		String[] options = { "r-Pentomino", "double-u", "blinker", "lwss", "Option15" };
 		comboBox = new JComboBox<String>(options);
-		checkBoxInfinte= new JCheckBox();
+		checkBoxInfinte = new JCheckBox();
 		checkBoxInfinte.setText("infinte");
 		jSliderSpeed = new JSlider(1, 5, 1);
 		jSliderSpeed.setMajorTickSpacing(1);
@@ -74,9 +113,9 @@ public class MyJFrame extends JFrame {
 		jPanelTextfields.add(jTextFieldHeight, BorderLayout.NORTH);
 		jPanelTextfields.add(jTextFieldWidth, BorderLayout.SOUTH);
 		panelCenter.setLayout(new BorderLayout());
-		panelCenter.add(comboBox,BorderLayout.NORTH);
+		panelCenter.add(comboBox, BorderLayout.NORTH);
 		panelCenter.add(jPanelTextfields, BorderLayout.EAST);
-		panelCenter.add(checkBoxInfinte,BorderLayout.WEST);
+		panelCenter.add(checkBoxInfinte, BorderLayout.WEST);
 		panelCenter.add(jSliderSpeed, BorderLayout.SOUTH);
 		panelButtons.add(panelCenter, BorderLayout.CENTER);
 	}
@@ -104,8 +143,6 @@ public class MyJFrame extends JFrame {
 	public JComboBox<String> getComboBox() {
 		return comboBox;
 	}
-
-
 
 	public MyDrawPanel getDrawPanel() {
 		return drawPanel;
@@ -139,11 +176,7 @@ public class MyJFrame extends JFrame {
 		return timer;
 	}
 
-	public void setbSouth(JButton bSouth) {
-		this.bSouth = bSouth;
-	}
-
-	public void setArena(Arena arena,int count) {
+	public void setArena(Arena arena, int count) {
 
 		this.getDrawPanel().getPoints().clear();
 		this.getjScrollPane().setBackground(Color.GRAY);
@@ -157,47 +190,12 @@ public class MyJFrame extends JFrame {
 		this.getDrawPanel().repaint();
 	}
 
-	public void setDrawpanel(MyDrawPanel drawpanel) {
-		this.drawPanel = drawpanel;
+	public void setbSouth(JButton bSouth) {
+		this.bSouth = bSouth;
 	}
 
-	public void setGameOfLifeService(GameOfLifeService gameOfLifeService) {
-		this.gameOfLifeService = gameOfLifeService;
-		setTitle("Game of Life");
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BorderLayout());
-		getContentPane().add(topPanel);
-		createPanelButtons();
-		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
-		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		topPanel.add(splitPaneV, BorderLayout.CENTER);	
-		jSliderSize = new JSlider(1, 5, 1);
-		jSliderSize.setMajorTickSpacing(1);
-		jSliderSize.setMinorTickSpacing(1);
-		jSliderSize.createStandardLabels(1);
-		jSliderSize.setPaintTicks(true);
-		jSliderSize.setPaintLabels(true);
-		jSliderSize.setBorder(new TitledBorder("size factor"));
-		topPanel.add(jSliderSize, BorderLayout.SOUTH);
-		splitPaneH = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		splitPaneH.setLeftComponent(panelButtons);
-		splitPaneV.setTopComponent(splitPaneH);
-		jScrollPane = new JPanel();
-		jScrollPane.setLayout(new GridBagLayout());
-		jScrollPane.add(drawPanel);
-		splitPaneV.setBottomComponent(new JScrollPane(jScrollPane));
-		comboBox.addActionListener(new MyActionListener(gameOfLifeService, this));
-		bNorth.addActionListener(new MyActionListener(gameOfLifeService, this));
-		bSouth.addActionListener(new MyActionListener(gameOfLifeService, this));
-		bEast.addActionListener(new MyActionListener(gameOfLifeService, this));
-		bWest.addActionListener(new MyActionListener(gameOfLifeService, this));
-	    jSliderSize.addChangeListener(new MyActionListener(gameOfLifeService, this));
-	    jSliderSpeed.addChangeListener(new MyActionListener(gameOfLifeService, this));
-		timer = new Timer(100, new MyActionListener(gameOfLifeService, this));
-		this.validate();
-		this.pack();
-		this.setVisible(true);
-		this.repaint();
+	public void setDrawpanel(MyDrawPanel drawpanel) {
+		this.drawPanel = drawpanel;
 	}
 
 	public void setTimer(Timer timer) {

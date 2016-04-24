@@ -13,9 +13,7 @@ public class GameOfLife {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception evt) {
 		}
-		Arena arena = new Arena(150, 150, false);
-		MyJFrame myJFrame = new MyJFrame();
-		GameOfLifeService gameOfLifeService = new GameOfLifeService(arena, myJFrame);
-		myJFrame.setGameOfLifeService(gameOfLifeService);
+		GameOfLifeService gameOfLifeService = new GameOfLifeService();
+		new MyJFrame(gameOfLifeService);
 	}
 }
