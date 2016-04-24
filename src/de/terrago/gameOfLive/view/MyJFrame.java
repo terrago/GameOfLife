@@ -26,7 +26,7 @@ public class MyJFrame extends JFrame {
 	private JButton bSouth;
 	private JButton bWest;
 	private JCheckBox checkBoxInfinte;
-	private JComboBox comboBox;
+	private JComboBox <String>comboBox;
 	private int count = 0;
 	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
@@ -39,10 +39,6 @@ public class MyJFrame extends JFrame {
 	private JSplitPane splitPaneH;
 	private JSplitPane splitPaneV;
 	private Timer timer;
-
-	public MyJFrame() {
-
-	}
 
 	public void createPanelButtons() {
 		panelButtons = new JPanel();
@@ -61,7 +57,7 @@ public class MyJFrame extends JFrame {
 		panelButtons.add(bWest, BorderLayout.WEST);
 		JPanel panelCenter = new JPanel(); 
 		String[] options = { "r-Pentomino", "double-u", "blinker", "lwss", "Option15" };
-		comboBox = new JComboBox(options);
+		comboBox = new JComboBox<String>(options);
 
 		checkBoxInfinte= new JCheckBox();
 		checkBoxInfinte.setText("infinte");
@@ -111,7 +107,7 @@ public class MyJFrame extends JFrame {
 		return checkBoxInfinte;
 	}
 
-	public JComboBox getComboBox() {
+	public JComboBox<String> getComboBox() {
 		return comboBox;
 	}
 
@@ -169,10 +165,8 @@ public class MyJFrame extends JFrame {
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
 		getContentPane().add(topPanel);
-		// Create the panels
 		createPanelButtons();
 		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
-		// Create a splitter pane
 		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		topPanel.add(splitPaneV, BorderLayout.CENTER);	
 		jSliderSize = new JSlider(1, 5, 1);
