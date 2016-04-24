@@ -41,8 +41,7 @@ public class MyActionListener implements ActionListener, ChangeListener {
 		if (ae.getSource() == myJFrame.getbEast()) {
 			myJFrame.getTimer().stop();
 			Arena arena = new Arena((int) Integer.parseInt(myJFrame.getjTextFieldWidth().getText()),
-					(int) Integer.parseInt(myJFrame.getjTextFieldHeight().getText())
-					);
+					(int) Integer.parseInt(myJFrame.getjTextFieldHeight().getText()));
 			arena.setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
 			this.startingPointX = arena.getWidth() / 2;
 			this.startingPointY = arena.getHeight() / 2;
@@ -85,7 +84,6 @@ public class MyActionListener implements ActionListener, ChangeListener {
 			gameOfLifeService.getArena().setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
 			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
-			
 		}
 		if (ae.getSource() == myJFrame.getTimer()) {
 			gameOfLifeService.getArena().setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
