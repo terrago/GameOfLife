@@ -43,22 +43,17 @@ public class MyJFrame extends JFrame {
 	public void createPanelButtons() {
 		panelButtons = new JPanel();
 		panelButtons.setLayout(new BorderLayout());
-		// Add buttons
 		bNorth = new JButton("Start");
 		panelButtons.add(bNorth, BorderLayout.NORTH);
-
 		bSouth = new JButton("Stop");
 		panelButtons.add(bSouth, BorderLayout.SOUTH);
-
 		bEast = new JButton("Übernehmen");
 		panelButtons.add(bEast, BorderLayout.EAST);
-
 		bWest = new JButton("Step");
 		panelButtons.add(bWest, BorderLayout.WEST);
 		JPanel panelCenter = new JPanel(); 
 		String[] options = { "r-Pentomino", "double-u", "blinker", "lwss", "Option15" };
 		comboBox = new JComboBox<String>(options);
-
 		checkBoxInfinte= new JCheckBox();
 		checkBoxInfinte.setText("infinte");
 		jSliderSpeed = new JSlider(1, 5, 1);
@@ -68,15 +63,12 @@ public class MyJFrame extends JFrame {
 		jSliderSpeed.setPaintTicks(true);
 		jSliderSpeed.setPaintLabels(true);
 		jSliderSpeed.setBorder(new TitledBorder("speed factor (0.1 seconds)"));
-		
 		JPanel jPanelTextfields = new JPanel();
 		jPanelTextfields.setLayout(new BorderLayout());
-		
 		jTextFieldHeight = new JTextField(5);
 		jTextFieldHeight.setText("100");
 		jTextFieldWidth = new JTextField(5);
 		jTextFieldWidth.setText("100");
-		
 		jPanelTextfields.add(jTextFieldHeight, BorderLayout.NORTH);
 		jPanelTextfields.add(jTextFieldWidth, BorderLayout.SOUTH);
 		panelCenter.setLayout(new BorderLayout());
