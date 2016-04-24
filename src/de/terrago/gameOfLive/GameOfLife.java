@@ -8,20 +8,12 @@ import de.terrago.gameOfLive.view.MyJFrame;
 
 public class GameOfLife {
 
-	private static Point[][] points;
-
 	public static void main(String args[]) {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception evt) {
 		}
-		// Initialize Points
-		// Blinker
-		// points[100][100].setAlife(true);
-		// points[100][101].setAlife(true);
-		// points[100][102].setAlife(true);
-
-		Arena arena = new Arena(150, 150);
+		Arena arena = new Arena(150, 150, false);
 
 		MyJFrame myJFrame = new MyJFrame();
 

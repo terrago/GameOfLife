@@ -43,7 +43,8 @@ public class GameOfLifeService {
 	}
 
 	public Arena getNextGeneration(Arena arena) {
-		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
+		Arena ret = new Arena(arena.getWidth(), arena.getHeight(), myJFrame.getCheckBoxInfinte().isSelected());
+		
 		for (int i = 0; i < arena.getWidth(); i++)
 			for (int j = 0; j < arena.getHeight(); j++) {
 				Point toBeChecked = arena.getPoint(i, j);
@@ -82,7 +83,6 @@ public class GameOfLifeService {
 				myJFrame.getDrawPanel().getPoints().add(arena.getPoint(j, i));
 			}
 		myJFrame.getDrawPanel().repaint();
-//		myJFrame.paintAll(myJFrame.getGraphics());
 		myJFrame.getbSouth().setText("Schritt:" + myJFrame.getCount());
 		myJFrame.getDrawPanel().repaint();
 	}

@@ -4,8 +4,18 @@ public class Arena {
 	private int height;
 	private Point[][] points;
 	private int width;
+	private boolean infinteWorld;
 
-	public Arena(int width, int height) {
+	public boolean isInfinteWorld() {
+		return infinteWorld;
+	}
+
+	public void setInfinteWorld(boolean infinteWorld) {
+		this.infinteWorld = infinteWorld;
+	}
+
+	public Arena(int width, int height, boolean infinteWorld) {
+		this.infinteWorld = infinteWorld;
 		this.width = width;
 		this.height = height;
 		points = new Point[width][height];
@@ -22,8 +32,22 @@ public class Arena {
 	public Point getPoint(int x, int y) {
 		if (x < width - 1 && x > -1 && y < height - 1 && y > -1)
 			return points[x][y];
-		else
-			return new Point(x, y);
+		else {
+			if (infinteWorld) {
+				if (x < 0)
+					x = x + (width - 1);
+				if (x >= width - 1)
+					x = x - (width - 1);
+				
+				if (y < 0)
+					y = y + (height - 1);
+				if (y >= height - 1)
+					y = y - (height - 1);
+				return points[x][y];
+
+			} else
+				return new Point(x, y);
+		}
 	}
 
 	public Point[][] getPoints() {
