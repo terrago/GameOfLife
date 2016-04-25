@@ -30,11 +30,17 @@ public class MyActionListener implements ActionListener, ChangeListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == myJFrame.getbNorth()) {
-			myJFrame.getTimer().start();
+			if (!myJFrame.getTimer().isRunning()) {
+				myJFrame.getTimer().start();
+				myJFrame.getbNorth().setText("stop");
+			} else {
+				myJFrame.getTimer().stop();
+				myJFrame.getbNorth().setText("start");
+			}
 		}
-		if (ae.getSource() == myJFrame.getbSouth()) {
-			myJFrame.getTimer().stop();
-		}
+//		if (ae.getSource() == myJFrame.getbSouth()) {
+//
+//		}
 		if (ae.getSource() == myJFrame.getComboBox()) {
 
 		}

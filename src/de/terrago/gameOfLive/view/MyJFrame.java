@@ -25,7 +25,7 @@ public class MyJFrame extends JFrame {
 
 	private JButton bEast;
 	private JButton bNorth;
-	private JButton bSouth;
+	//private JButton bSouth;
 	private JButton bWest;
 	private JCheckBox checkBoxInfinte;
 	private JComboBox<String> comboBox;
@@ -69,7 +69,7 @@ public class MyJFrame extends JFrame {
 		splitPaneV.setBottomComponent(new JScrollPane(jScrollPane));
 		comboBox.addActionListener(new MyActionListener(gameOfLifeService, this));
 		bNorth.addActionListener(new MyActionListener(gameOfLifeService, this));
-		bSouth.addActionListener(new MyActionListener(gameOfLifeService, this));
+		//bSouth.addActionListener(new MyActionListener(gameOfLifeService, this));
 		bEast.addActionListener(new MyActionListener(gameOfLifeService, this));
 		bWest.addActionListener(new MyActionListener(gameOfLifeService, this));
 		jSliderSize.addChangeListener(new MyActionListener(gameOfLifeService, this));
@@ -84,13 +84,13 @@ public class MyJFrame extends JFrame {
 	public void createPanelButtons() {
 		panelButtons = new JPanel();
 		panelButtons.setLayout(new BorderLayout());
-		bNorth = new JButton("Start");
+		bNorth = new JButton("start");
 		panelButtons.add(bNorth, BorderLayout.NORTH);
-		bSouth = new JButton("Stop");
-		panelButtons.add(bSouth, BorderLayout.SOUTH);
-		bEast = new JButton("Übernehmen");
+		//bSouth = new JButton("stop");
+		//panelButtons.add(bSouth, BorderLayout.SOUTH);
+		bEast = new JButton("take over");
 		panelButtons.add(bEast, BorderLayout.EAST);
-		bWest = new JButton("Step");
+		bWest = new JButton("step");
 		panelButtons.add(bWest, BorderLayout.WEST);
 		JPanel panelCenter = new JPanel();
 		String[] options = { "r-Pentomino", "double-u", "blinker", "lwss", "Option15" };
@@ -128,9 +128,9 @@ public class MyJFrame extends JFrame {
 		return bNorth;
 	}
 
-	public JButton getbSouth() {
-		return bSouth;
-	}
+//	public JButton getbSouth() {
+//		return bSouth;
+//	}
 
 	public JButton getbWest() {
 		return bWest;
@@ -186,13 +186,13 @@ public class MyJFrame extends JFrame {
 				this.getDrawPanel().getPoints().add(arena.getPoint(j, i));
 			}
 		this.getDrawPanel().repaint();
-		this.getbSouth().setText("Schritt:" + count);
+		this.getbWest().setText("step: " + count);
 		this.getDrawPanel().repaint();
 	}
 
-	public void setbSouth(JButton bSouth) {
-		this.bSouth = bSouth;
-	}
+//	public void setbSouth(JButton bSouth) {
+//		this.bSouth = bSouth;
+//	}
 
 	public void setDrawpanel(MyDrawPanel drawpanel) {
 		this.drawPanel = drawpanel;
