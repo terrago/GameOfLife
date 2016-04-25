@@ -2,7 +2,6 @@ package de.terrago.gameOfLive;
 
 import javax.swing.UIManager;
 
-import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 import de.terrago.gameOfLive.view.MyJFrame;
 
