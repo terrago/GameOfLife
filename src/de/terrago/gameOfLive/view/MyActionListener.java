@@ -3,9 +3,15 @@ package de.terrago.gameOfLive.view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JFileChooser;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.service.ArenaModifierService;
@@ -38,9 +44,41 @@ public class MyActionListener implements ActionListener, ChangeListener {
 				myJFrame.getbNorth().setText("start");
 			}
 		}
-//		if (ae.getSource() == myJFrame.getbSouth()) {
-//
-//		}
+		if (ae.getSource() == myJFrame.getMenuItemOpen()) {
+			JFileChooser c = new JFileChooser();
+			// Demonstrate "Open" dialog:
+			int rVal = c.showOpenDialog(myJFrame);
+			if (rVal == JFileChooser.APPROVE_OPTION) {
+				// (filename.setText(c.getSelectedFile().getName());
+				// dir.setText(c.getCurrentDirectory().toString());
+			}
+			if (rVal == JFileChooser.CANCEL_OPTION) {
+				// filename.setText("You pressed cancel");
+				// dir.setText("");
+			}
+		}
+		if (ae.getSource() == myJFrame.getMenuItemSave()) {
+			JFileChooser c = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"GOL-Files", "gol");
+			c.setFileFilter(filter);
+			int rVal = c.showSaveDialog(myJFrame);
+			if (rVal == JFileChooser.APPROVE_OPTION) {
+				List<Arena> arenas = new ArrayList<Arena>();
+				arenas.add(gameOfLifeService.getArena());
+				try {
+					FileOutputStream fout = new FileOutputStream(c.getSelectedFile().getPath());
+					ObjectOutputStream oos = new ObjectOutputStream(fout);
+					oos.writeObject(arenas);
+					fout.close();
+					oos.close();
+				} catch (Exception E) {
+					int i = 0;
+					i++;
+				}
+			}
+		}
+
 		if (ae.getSource() == myJFrame.getComboBox()) {
 
 		}

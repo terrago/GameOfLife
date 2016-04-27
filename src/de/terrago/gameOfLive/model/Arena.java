@@ -1,6 +1,10 @@
 package de.terrago.gameOfLive.model;
 
-public class Arena {
+import java.io.Serializable;
+
+public class Arena implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private int height;
 	private boolean infinteWorld;
 	private Point[][] points;

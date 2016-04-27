@@ -1,6 +1,10 @@
 package de.terrago.gameOfLive.model;
 
-public class Point {
+import java.io.Serializable;
+
+public class Point implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private boolean alife = false;
 	private int x;
 	private int y;

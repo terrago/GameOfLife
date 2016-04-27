@@ -3,12 +3,18 @@ package de.terrago.gameOfLive.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
@@ -27,9 +33,10 @@ public class MyJFrame extends JFrame {
 	private JButton bNorth;
 	//private JButton bSouth;
 	private JButton bWest;
+	JCheckBoxMenuItem cbMenuItem;
 	private JCheckBox checkBoxInfinte;
-	private JComboBox<String> comboBox;
 
+	private JComboBox<String> comboBox;
 	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
 	private JPanel jScrollPane;
@@ -37,7 +44,12 @@ public class MyJFrame extends JFrame {
 	private JSlider jSliderSpeed;
 	private JTextField jTextFieldHeight;
 	private JTextField jTextFieldWidth;
+	JMenu menu;
+	JMenuBar menuBar;
+	JMenuItem menuItemOpen,menuItemSave;
+	
 	private JPanel panelButtons;
+	JRadioButtonMenuItem rbMenuItem;
 	private JSplitPane splitPaneH;
 	private JSplitPane splitPaneV;
 	private Timer timer;
@@ -45,6 +57,9 @@ public class MyJFrame extends JFrame {
 	public MyJFrame(GameOfLifeService gameOfLifeService) {
 		this.gameOfLifeService = gameOfLifeService;
 		setTitle("Game of Life");
+		
+		
+		
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
 		getContentPane().add(topPanel);
@@ -75,10 +90,29 @@ public class MyJFrame extends JFrame {
 		jSliderSize.addChangeListener(new MyActionListener(gameOfLifeService, this));
 		jSliderSpeed.addChangeListener(new MyActionListener(gameOfLifeService, this));
 		timer = new Timer(100, new MyActionListener(gameOfLifeService, this));
+		createMenubar();
+
+		
 		this.validate();
 		this.pack();
 		this.setVisible(true);
 		this.repaint();
+	}
+	
+	public void createMenubar(){
+		//Create the menu bar.
+		menuBar = new JMenuBar();
+		menu = new JMenu("File");
+		menu.setMnemonic(KeyEvent.VK_A);
+		menu.getAccessibleContext().setAccessibleDescription("File menu");
+		menuBar.add(menu);
+		menuItemOpen = new JMenuItem("Open");
+		menuItemOpen.addActionListener(new MyActionListener(gameOfLifeService, this));
+		menu.add(menuItemOpen);
+		menuItemSave = new JMenuItem("Save As");
+		menuItemSave.addActionListener(new MyActionListener(gameOfLifeService, this));
+		menu.add(menuItemSave);
+		this.setJMenuBar(menuBar);
 	}
 
 	public void createPanelButtons() {
@@ -128,10 +162,6 @@ public class MyJFrame extends JFrame {
 		return bNorth;
 	}
 
-//	public JButton getbSouth() {
-//		return bSouth;
-//	}
-
 	public JButton getbWest() {
 		return bWest;
 	}
@@ -139,6 +169,10 @@ public class MyJFrame extends JFrame {
 	public JCheckBox getCheckBoxInfinte() {
 		return checkBoxInfinte;
 	}
+
+//	public JButton getbSouth() {
+//		return bSouth;
+//	}
 
 	public JComboBox<String> getComboBox() {
 		return comboBox;
@@ -170,6 +204,14 @@ public class MyJFrame extends JFrame {
 
 	public JTextField getjTextFieldWidth() {
 		return jTextFieldWidth;
+	}
+
+	public JMenuItem getMenuItemOpen() {
+		return menuItemOpen;
+	}
+
+	public JMenuItem getMenuItemSave() {
+		return menuItemSave;
 	}
 
 	public Timer getTimer() {
