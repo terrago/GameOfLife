@@ -23,14 +23,14 @@ public class NewFileDialog extends JPanel{
 		
 		JSplitPane splitPaneVTextbox1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		jTextField1 = new JTextField(5);
-		jTextField1.setText("100");
+		jTextField1.setText("150");
 		JLabel jLabel1 = new JLabel("width:");
 		splitPaneVTextbox1.setLeftComponent(jLabel1);
 		splitPaneVTextbox1.setRightComponent(jTextField1);
 		
 		JSplitPane splitPaneVTextbox2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		jTextField2 = new JTextField(5);
-		jTextField2.setText("100");
+		jTextField2.setText("150");
 
 		JLabel jLabel2 = new JLabel("height:");
 		splitPaneVTextbox2.setLeftComponent(jLabel2);

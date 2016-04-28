@@ -78,7 +78,11 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 				List<Arena> arenas = new ArrayList<Arena>();
 				arenas.add(gameOfLifeService.getArena());
 				try {
-					FileOutputStream fout = new FileOutputStream(c.getSelectedFile().getPath());
+					String filename = c.getSelectedFile().getPath();
+					if (!filename.endsWith(".gol")){
+						filename = filename.concat(".gol");
+					}
+					FileOutputStream fout = new FileOutputStream(filename);
 					ObjectOutputStream oos = new ObjectOutputStream(fout);
 					oos.writeObject(arenas);
 					fout.close();
@@ -89,7 +93,7 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 		}
 		if (ae.getSource() == myJFrame.getMenuItemNew()){
 			NewFileDialog newFileDialog = new NewFileDialog();
-			int i =JOptionPane.showConfirmDialog(null,newFileDialog,"New Arena",JOptionPane.PLAIN_MESSAGE);
+			int i =JOptionPane.showConfirmDialog(myJFrame,newFileDialog,"New Arena",JOptionPane.PLAIN_MESSAGE);
 			if (i == 0){
 				int width = Integer.parseInt(newFileDialog.getjTextField1().getText());
 				int height = Integer.parseInt(newFileDialog.getjTextField2().getText());

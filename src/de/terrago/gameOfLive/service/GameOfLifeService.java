@@ -11,7 +11,7 @@ public class GameOfLifeService {
 	private int countGeneration = 0;
 
 	public GameOfLifeService() {
-		arena = new Arena(150, 150);
+		
 	}
 
 	public Arena getArena() {

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -16,13 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 
 import de.terrago.gameOfLive.model.Arena;
+import de.terrago.gameOfLive.service.ArenaModifierService;
 import de.terrago.gameOfLive.service.GameOfLifeService;
-import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
 
 public class MyJFrame extends JFrame {
 
@@ -48,6 +46,8 @@ public class MyJFrame extends JFrame {
 		topPanel.setLayout(new BorderLayout());
 		getContentPane().add(topPanel);
 		createPanelButtons();
+		gameOfLifeService.setArena(new ArenaModifierService().getRPentomino(new Arena(150, 150), 75, 75)); 
+		
 		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
 		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		topPanel.add(splitPaneV, BorderLayout.CENTER);
@@ -73,6 +73,8 @@ public class MyJFrame extends JFrame {
 		jSliderSpeed.addChangeListener(new MyActionListener(gameOfLifeService, this));
 		timer = new Timer(50, new MyActionListener(gameOfLifeService, this));
 		createMenubar();
+		this.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.validate();
 		this.pack();
