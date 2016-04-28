@@ -14,7 +14,7 @@ import de.terrago.gameOfLive.model.Point;
 public class MyDrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Set<Point> points = new HashSet<Point>();
-	int sizefactor;
+	int sizefactor =1;
 
 	public MyDrawPanel(int width, int height) {
 		super.setPreferredSize(new Dimension(width, height));

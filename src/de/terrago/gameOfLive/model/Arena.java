@@ -1,23 +1,23 @@
 package de.terrago.gameOfLive.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Arena implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private int height;
 	private boolean infinteWorld;
-	private Point[][] points;
+	private Set<Point> points;
+
 	private int width;
 
 	public Arena(int width, int height) {
 		this.width = width;
 		this.height = height;
-		points = new Point[width][height];
-		for (int i = 0; i < width; i++)
-			for (int j = 0; j < height; j++) {
-				points[i][j] = new Point(i, j);
-			}
+		points = new HashSet<Point>();
+
 	}
 
 	public int getHeight() {
@@ -26,7 +26,7 @@ public class Arena implements Serializable {
 
 	public Point getPoint(int x, int y) {
 		if (x < width - 1 && x > -1 && y < height - 1 && y > -1)
-			return points[x][y];
+			return _getPoint(x, y);
 		else {
 			if (infinteWorld) {
 				if (x < 0)
@@ -37,15 +37,21 @@ public class Arena implements Serializable {
 					y = y + (height - 1);
 				if (y >= height - 1)
 					y = y - (height - 1);
-				return points[x][y];
+				return _getPoint(x, y);
 
 			} else
-				return new Point(x, y);
+				return _getPoint(x, y);
 		}
 	}
 
-	public Point[][] getPoints() {
-		return points;
+	private Point _getPoint(int x, int y) {
+		Point result = new Point(x, y);
+		for (Point point : points) {
+			if (point.getX() == x && point.getY() == y) {
+				result = point;
+			}
+		}
+		return result;
 	}
 
 	public int getWidth() {
@@ -65,11 +71,15 @@ public class Arena implements Serializable {
 	}
 
 	public void setPoint(int x, int y, boolean alife) {
-		points[x][y].setAlife(alife);
+		Point point = _getPoint(x, y);
+		point.setAlife(alife);
+		if (point.isAlife()) {
+			points.add(point);
+		}
 	}
 
-	public void setPoints(Point[][] points) {
-		this.points = points;
+	public Set<Point> getPoints() {
+		return points;
 	}
 
 	public void setWidth(int width) {

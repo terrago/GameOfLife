@@ -1,5 +1,8 @@
 package de.terrago.gameOfLive.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.model.Point;
 
@@ -14,7 +17,7 @@ public class GameOfLifeService {
 	public Arena getArena() {
 		return arena;
 	}
-	
+
 	public int getCountGeneration() {
 		return countGeneration;
 	}
@@ -38,17 +41,22 @@ public class GameOfLifeService {
 	public Arena getNextGeneration(Arena arena) {
 		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
 		ret.setInfinteWorld(arena.isInfinteWorld());
-		for (int i = 0; i < arena.getWidth(); i++)
-			for (int j = 0; j < arena.getHeight(); j++) {
-				Point toBeChecked = arena.getPoint(i, j);
+		for (Point oldArenaPoint : arena.getPoints()) {
+			Set<Point> allPossiblePoints = new HashSet<>();
+			allPossiblePoints.add(oldArenaPoint);
+			for (Point addPoint : getNeighbors(arena, oldArenaPoint)) {
+				allPossiblePoints.add(addPoint);
+			}
+			for (Point toBeChecked : allPossiblePoints) {
 				boolean isAlife = false;
 				int numberOfNeighbors = getNumberofNeighbors(arena, toBeChecked);
 				if (toBeChecked.isAlife() && numberOfNeighbors < 4 && numberOfNeighbors > 1)
 					isAlife = true;
 				if (!toBeChecked.isAlife() && numberOfNeighbors == 3)
 					isAlife = true;
-				ret.setPoint(i, j, isAlife);
+				ret.setPoint(toBeChecked.getX(), toBeChecked.getY(), isAlife);
 			}
+		}
 		this.countGeneration++;
 		return ret;
 	}
@@ -62,13 +70,14 @@ public class GameOfLifeService {
 		return numberOfNeighbors;
 	}
 
-	public Point[][] getPoints() {
+	public Set<Point> getPoints() {
 		return arena.getPoints();
 	}
 
 	public void setArena(Arena arena) {
 		this.arena = arena;
 	}
+
 	public void setCountGeneration(int count) {
 		this.countGeneration = count;
 	}

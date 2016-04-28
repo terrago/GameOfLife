@@ -223,10 +223,7 @@ public class MyJFrame extends JFrame {
 		this.getDrawPanel().getPoints().clear();
 		this.getjScrollPane().setBackground(Color.GRAY);
 		this.getDrawPanel().setBackground(Color.WHITE);
-		for (int i = 0; i < arena.getHeight(); i++)
-			for (int j = 0; j < arena.getWidth(); j++) {
-				this.getDrawPanel().getPoints().add(arena.getPoint(j, i));
-			}
+		this.getDrawPanel().setPoints(arena.getPoints());
 		this.getDrawPanel().repaint();
 		this.getbWest().setText("step: " + count);
 		this.getDrawPanel().repaint();
