@@ -33,11 +33,12 @@ public class MyJFrame extends JFrame {
 	private GameOfLifeService gameOfLifeService;
 	private JPanel jScrollPane,panelButtons;
 	private JSlider jSliderSize,jSliderSpeed;
-	private JMenu menu;
+	private JMenu menuFile,menuEdit;
 	private JMenuBar menuBar;
-	private JMenuItem menuItemOpen,menuItemSave,menuItemNew;
+	private JMenuItem menuItemOpen,menuItemSave,menuItemNew,menuItemBackToLastStart;
 	private JSplitPane splitPaneH,splitPaneV;
 	private Timer timer;
+	private Arena startArena;
 
 	public MyJFrame(GameOfLifeService gameOfLifeService) {
 		this.gameOfLifeService = gameOfLifeService;
@@ -84,18 +85,35 @@ public class MyJFrame extends JFrame {
 	
 	public void createMenubar(){
 		menuBar = new JMenuBar();
-		menu = new JMenu("File");
-		menuBar.add(menu);
+		menuFile = new JMenu("File");
+		menuEdit = new JMenu("Edit");
+		menuBar.add(menuFile);
+		menuBar.add(menuEdit);
 		menuItemNew = new JMenuItem("New");
 		menuItemNew.addActionListener(new MyActionListener(gameOfLifeService, this));
-		menu.add(menuItemNew);
+		menuFile.add(menuItemNew);
 		menuItemOpen = new JMenuItem("Open");
 		menuItemOpen.addActionListener(new MyActionListener(gameOfLifeService, this));
-		menu.add(menuItemOpen);
+		menuFile.add(menuItemOpen);
 		menuItemSave = new JMenuItem("Save As");
 		menuItemSave.addActionListener(new MyActionListener(gameOfLifeService, this));
-		menu.add(menuItemSave);
+		menuFile.add(menuItemSave);
+		menuItemBackToLastStart = new JMenuItem("Back to last Start");
+		menuItemBackToLastStart.addActionListener(new MyActionListener(gameOfLifeService, this));
+		menuEdit.add(menuItemBackToLastStart);
 		this.setJMenuBar(menuBar);
+	}
+
+	public void setStartArena(Arena startArena) {
+		this.startArena = startArena;
+	}
+
+	public Arena getStartArena() {
+		return startArena;
+	}
+
+	public JMenuItem getMenuItemBackToLastStart() {
+		return menuItemBackToLastStart;
 	}
 
 	public void createPanelButtons() {
@@ -182,7 +200,7 @@ public class MyJFrame extends JFrame {
 
 		this.getDrawPanel().getPoints().clear();
 		this.getjScrollPane().setBackground(Color.GRAY);
-		this.getDrawPanel().setBackground(Color.WHITE);
+		this.getDrawPanel().setBackground(Color.BLACK);
 		this.getDrawPanel().setPoints(arena.getPoints());
 		this.getDrawPanel().repaint();
 		this.getbWest().setText("step: " + count);

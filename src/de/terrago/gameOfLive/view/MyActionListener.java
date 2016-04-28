@@ -22,6 +22,7 @@ import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.service.ArenaModifierService;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
+import de.terrago.utils.Tools;
 
 public class MyActionListener implements ActionListener, ChangeListener,MouseListener {
 
@@ -43,6 +44,7 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == myJFrame.getbNorth()) {
 			if (!myJFrame.getTimer().isRunning()) {
+				myJFrame.setStartArena((Arena)Tools.deepCopy(gameOfLifeService.getArena()));
 				myJFrame.getTimer().start();
 				myJFrame.getbNorth().setText("stop");
 			} else {
@@ -100,6 +102,12 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 				ArenaModifierEnum arenaModifierEnum = (ArenaModifierEnum)newFileDialog.getComboBox().getSelectedItem();
 				newArena(width, height, arenaModifierEnum);
 			}
+		}
+		if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()){
+			gameOfLifeService.setArena(myJFrame.getStartArena());
+			gameOfLifeService.setCountGeneration(0);
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+			
 		}
 
 		if (ae.getSource() == myJFrame.getbWest()) {

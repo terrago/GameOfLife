@@ -32,7 +32,7 @@ public class MyDrawPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.black);
+		g.setColor(Color.WHITE);
 		for (Point point : points) {
 			if (point.isAlife())
 				g.fillRect(point.getX() * sizefactor, point.getY() * sizefactor, sizefactor * 1, sizefactor);
