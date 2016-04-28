@@ -50,6 +50,8 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 		}
 		if (ae.getSource() == myJFrame.getMenuItemOpen()) {
 			JFileChooser c = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("GOL-Files", "gol");
+			c.setFileFilter(filter);
 			int rVal = c.showOpenDialog(myJFrame);
 			if (rVal == JFileChooser.APPROVE_OPTION) {
 				try {
