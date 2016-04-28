@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -20,6 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.service.ArenaModifierService;
 import de.terrago.gameOfLive.service.GameOfLifeService;
+import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
 
 public class MyActionListener implements ActionListener, ChangeListener,MouseListener {
 
@@ -85,52 +87,17 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 				}
 			}
 		}
-
-		if (ae.getSource() == myJFrame.getComboBox()) {
-
-		}
-		if (ae.getSource() == myJFrame.getbEast()) {
-			myJFrame.getTimer().stop();
-			Arena arena = new Arena((int) Integer.parseInt(myJFrame.getjTextFieldWidth().getText()),
-					(int) Integer.parseInt(myJFrame.getjTextFieldHeight().getText()));
-			arena.setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
-			this.startingPointX = arena.getWidth() / 2;
-			this.startingPointY = arena.getHeight() / 2;
-
-			String selectedValue = myJFrame.getComboBox().getSelectedItem().toString();
-			switch (selectedValue) {
-			case "r-Pentomino":
-				arena = arenaModifierService.getRPentomino(arena, startingPointX, startingPointY);
-				break;
-			case "double-u":
-				arena = arenaModifierService.getDoubleU(arena, startingPointX, startingPointY);
-				break;
-			case "blinker":
-				arena = arenaModifierService.getBlinker(arena, startingPointX, startingPointY);
-				break;
-			case "lwss":
-				arena = arenaModifierService.getLwss(arena, startingPointX, startingPointY);
-				break;
-			default:
-				break;
+		if (ae.getSource() == myJFrame.getMenuItemNew()){
+			NewFileDialog newFileDialog = new NewFileDialog();
+			int i =JOptionPane.showConfirmDialog(null,newFileDialog,"New Arena",JOptionPane.PLAIN_MESSAGE);
+			if (i == 0){
+				int width = Integer.parseInt(newFileDialog.getjTextField1().getText());
+				int height = Integer.parseInt(newFileDialog.getjTextField2().getText());
+				ArenaModifierEnum arenaModifierEnum = (ArenaModifierEnum)newFileDialog.getComboBox().getSelectedItem();
+				newArena(width, height, arenaModifierEnum);
 			}
-			gameOfLifeService.setCountGeneration(0);
-			myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSliderSize().getValue());
-			myJFrame.getDrawPanel()
-					.setPreferredSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
-							arena.getHeight() * myJFrame.getjSliderSize().getValue()));
-			myJFrame.getDrawPanel().setSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
-					arena.getHeight() * myJFrame.getjSliderSize().getValue()));
-			myJFrame.getDrawPanel()
-					.setMaximumSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
-							arena.getHeight() * myJFrame.getjSliderSize().getValue()));
-			gameOfLifeService.setArena(arena);
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
-			myJFrame.getDrawPanel().update(myJFrame.getDrawPanel().getGraphics());
-			myJFrame.getjScrollPane().update(myJFrame.getjScrollPane().getGraphics());
-			myJFrame.getDrawPanel().repaint();
-			myJFrame.paintAll(myJFrame.getGraphics());
 		}
+
 		if (ae.getSource() == myJFrame.getbWest()) {
 			gameOfLifeService.getArena().setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
@@ -141,8 +108,51 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
 			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
 		}
+
 	}
 
+	private void newArena(int width, int height,ArenaModifierEnum arenaModifierEnum){
+		myJFrame.getTimer().stop();
+		Arena arena = new Arena(width,height);
+		arena.setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
+		this.startingPointX = arena.getWidth() / 2;
+		this.startingPointY = arena.getHeight() / 2;
+
+		switch (arenaModifierEnum) {
+		case RPENTOMINO:
+			arena = arenaModifierService.getRPentomino(arena, startingPointX, startingPointY);
+			break;
+		case DOUBLEU:
+			arena = arenaModifierService.getDoubleU(arena, startingPointX, startingPointY);
+			break;
+		case BLINKER:
+			arena = arenaModifierService.getBlinker(arena, startingPointX, startingPointY);
+			break;
+		case LWSS:
+			arena = arenaModifierService.getLwss(arena, startingPointX, startingPointY);
+			break;
+		default:
+			break;
+		}
+		gameOfLifeService.setCountGeneration(0);
+		myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSliderSize().getValue());
+		myJFrame.getDrawPanel()
+				.setPreferredSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
+						arena.getHeight() * myJFrame.getjSliderSize().getValue()));
+		myJFrame.getDrawPanel().setSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
+				arena.getHeight() * myJFrame.getjSliderSize().getValue()));
+		myJFrame.getDrawPanel()
+				.setMaximumSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
+						arena.getHeight() * myJFrame.getjSliderSize().getValue()));
+		gameOfLifeService.setArena(arena);
+		myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+		myJFrame.getDrawPanel().update(myJFrame.getDrawPanel().getGraphics());
+		myJFrame.getjScrollPane().update(myJFrame.getjScrollPane().getGraphics());
+		myJFrame.getDrawPanel().repaint();
+		myJFrame.paintAll(myJFrame.getGraphics());
+	}
+	
+	
 	@Override
 	public void stateChanged(ChangeEvent ce) {
 		if (ce.getSource() == myJFrame.getjSliderSize()) {
