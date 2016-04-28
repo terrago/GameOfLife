@@ -89,7 +89,7 @@ public class MyJFrame extends JFrame {
 		bWest.addActionListener(new MyActionListener(gameOfLifeService, this));
 		jSliderSize.addChangeListener(new MyActionListener(gameOfLifeService, this));
 		jSliderSpeed.addChangeListener(new MyActionListener(gameOfLifeService, this));
-		timer = new Timer(100, new MyActionListener(gameOfLifeService, this));
+		timer = new Timer(50, new MyActionListener(gameOfLifeService, this));
 		createMenubar();
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
@@ -137,7 +137,7 @@ public class MyJFrame extends JFrame {
 		jSliderSpeed.createStandardLabels(1);
 		jSliderSpeed.setPaintTicks(true);
 		jSliderSpeed.setPaintLabels(true);
-		jSliderSpeed.setBorder(new TitledBorder("speed factor (0.1 seconds)"));
+		jSliderSpeed.setBorder(new TitledBorder("speed factor * 0.05 seconds"));
 		JPanel jPanelTextfields = new JPanel();
 		jPanelTextfields.setLayout(new BorderLayout());
 		jTextFieldHeight = new JTextField(5);

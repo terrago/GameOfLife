@@ -161,7 +161,7 @@ public class MyActionListener implements ActionListener, ChangeListener {
 			myJFrame.paintAll(myJFrame.getGraphics());
 		}
 		if (ce.getSource() == myJFrame.getjSliderSpeed()) {
-			myJFrame.getTimer().setDelay(myJFrame.getjSliderSpeed().getValue() * 100);
+			myJFrame.getTimer().setDelay(myJFrame.getjSliderSpeed().getValue() * 50);
 		}
 	}
 }
