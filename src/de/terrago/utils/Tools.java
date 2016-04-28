@@ -19,6 +19,8 @@ public class Tools {
 			ByteArrayInputStream bais = new ByteArrayInputStream(byteData);
 			result = (Object) new ObjectInputStream(bais).readObject();
 		} catch (Exception E) {
+			int i = 0;
+			i++;
 		}
 		return result;
 	}

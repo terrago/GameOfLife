@@ -35,7 +35,8 @@ public class MyJFrame extends JFrame {
 	private JSlider jSliderSize,jSliderSpeed;
 	private JMenu menuFile,menuEdit;
 	private JMenuBar menuBar;
-	private JMenuItem menuItemOpen,menuItemSave,menuItemNew,menuItemBackToLastStart;
+	private JMenuItem menuItemOpen,menuItemSave,menuItemNew,menuItemBackToLastStart
+	,menuItemImport;
 	private JSplitPane splitPaneH,splitPaneV;
 	private Timer timer;
 	private Arena startArena;
@@ -98,10 +99,18 @@ public class MyJFrame extends JFrame {
 		menuItemSave = new JMenuItem("Save As");
 		menuItemSave.addActionListener(new MyActionListener(gameOfLifeService, this));
 		menuFile.add(menuItemSave);
+		menuItemImport = new JMenuItem("Import .cell Files");
+		menuItemImport.addActionListener(new MyActionListener(gameOfLifeService, this) );
+		menuFile.add(menuItemImport);
+
 		menuItemBackToLastStart = new JMenuItem("Back to last Start");
 		menuItemBackToLastStart.addActionListener(new MyActionListener(gameOfLifeService, this));
 		menuEdit.add(menuItemBackToLastStart);
 		this.setJMenuBar(menuBar);
+	}
+
+	public JMenuItem getMenuItemImport() {
+		return menuItemImport;
 	}
 
 	public void setStartArena(Arena startArena) {
@@ -204,7 +213,6 @@ public class MyJFrame extends JFrame {
 		this.getDrawPanel().setPoints(arena.getPoints());
 		this.getDrawPanel().repaint();
 		this.getbWest().setText("step: " + count);
-		this.getDrawPanel().repaint();
 	}
 
 	public void setDrawpanel(MyDrawPanel drawpanel) {

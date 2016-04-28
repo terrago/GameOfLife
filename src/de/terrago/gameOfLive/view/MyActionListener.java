@@ -19,6 +19,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.terrago.gameOfLive.model.Arena;
+import de.terrago.gameOfLive.model.Point;
 import de.terrago.gameOfLive.service.ArenaModifierService;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
@@ -106,8 +107,23 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 		if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()){
 			gameOfLifeService.setArena(myJFrame.getStartArena());
 			gameOfLifeService.setCountGeneration(0);
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
-			
+			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());	
+		}
+		if (ae.getSource()== myJFrame.getMenuItemImport()){
+			ImportFileDialog importFileDialog = new ImportFileDialog();
+			int i = JOptionPane.showConfirmDialog(myJFrame, importFileDialog,"Import .cell Files",JOptionPane.PLAIN_MESSAGE);
+			if (i==0){
+				Arena cellFileArena = importFileDialog.getArena();
+				gameOfLifeService.setArena(gameOfLifeService.getNewArena(gameOfLifeService.getArena()));
+				int startingPointX = Integer.parseInt(importFileDialog.getjTextField1().getText());
+				int startingPointY = Integer.parseInt(importFileDialog.getjTextField2().getText());
+				for (Point point:cellFileArena.getPoints()){
+					gameOfLifeService.getArena().setPoint(point.getX()+startingPointX, point.getY()+startingPointY, true);
+				}
+				gameOfLifeService.setCountGeneration(0);
+				myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+
+			}
 		}
 
 		if (ae.getSource() == myJFrame.getbWest()) {

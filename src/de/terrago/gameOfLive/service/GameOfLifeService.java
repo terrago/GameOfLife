@@ -60,6 +60,16 @@ public class GameOfLifeService {
 		this.countGeneration++;
 		return ret;
 	}
+	
+	public Arena getNewArena(Arena arena){
+		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
+		ret.setInfinteWorld(arena.isInfinteWorld());
+		for (Point oldArenaPoint : arena.getPoints()) {
+			ret.setPoint(oldArenaPoint.getX(),oldArenaPoint.getY(), oldArenaPoint.isAlife());
+		}
+		return ret;
+		
+	}
 
 	private int getNumberofNeighbors(Arena arena, Point toBeChecked) {
 		int numberOfNeighbors = 0;
