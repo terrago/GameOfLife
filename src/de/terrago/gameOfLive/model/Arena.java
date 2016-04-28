@@ -33,7 +33,6 @@ public class Arena implements Serializable {
 					x = x + (width - 1);
 				if (x >= width - 1)
 					x = x - (width - 1);
-
 				if (y < 0)
 					y = y + (height - 1);
 				if (y >= height - 1)

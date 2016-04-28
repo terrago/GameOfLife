@@ -92,7 +92,7 @@ public class MyJFrame extends JFrame {
 		timer = new Timer(100, new MyActionListener(gameOfLifeService, this));
 		createMenubar();
 
-		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.validate();
 		this.pack();
 		this.setVisible(true);
