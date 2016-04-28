@@ -80,6 +80,7 @@ public class MyJFrame extends JFrame {
 		splitPaneV.setTopComponent(splitPaneH);
 		jScrollPane = new JPanel();
 		jScrollPane.setLayout(new GridBagLayout());
+		drawPanel.addMouseListener(new MyActionListener(gameOfLifeService, this));
 		jScrollPane.add(drawPanel);
 		splitPaneV.setBottomComponent(new JScrollPane(jScrollPane));
 		comboBox.addActionListener(new MyActionListener(gameOfLifeService, this));
@@ -127,11 +128,11 @@ public class MyJFrame extends JFrame {
 		bWest = new JButton("step");
 		panelButtons.add(bWest, BorderLayout.WEST);
 		JPanel panelCenter = new JPanel();
-		String[] options = { "r-Pentomino", "double-u", "blinker", "lwss", "Option15" };
+		String[] options = { "empty","r-Pentomino", "double-u", "blinker", "lwss", "Option15" };
 		comboBox = new JComboBox<String>(options);
 		checkBoxInfinte = new JCheckBox();
 		checkBoxInfinte.setText("infinte");
-		jSliderSpeed = new JSlider(1, 5, 1);
+		jSliderSpeed = new JSlider(1, 10, 1);
 		jSliderSpeed.setMajorTickSpacing(1);
 		jSliderSpeed.setMinorTickSpacing(1);
 		jSliderSpeed.createStandardLabels(1);

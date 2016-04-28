@@ -3,6 +3,8 @@ package de.terrago.gameOfLive.view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -19,7 +21,7 @@ import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.service.ArenaModifierService;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 
-public class MyActionListener implements ActionListener, ChangeListener {
+public class MyActionListener implements ActionListener, ChangeListener,MouseListener {
 
 	private ArenaModifierService arenaModifierService;
 	private GameOfLifeService gameOfLifeService;
@@ -48,12 +50,12 @@ public class MyActionListener implements ActionListener, ChangeListener {
 		}
 		if (ae.getSource() == myJFrame.getMenuItemOpen()) {
 			JFileChooser c = new JFileChooser();
-			// Demonstrate "Open" dialog:
 			int rVal = c.showOpenDialog(myJFrame);
 			if (rVal == JFileChooser.APPROVE_OPTION) {
 				try {
 					FileInputStream streamIn = new FileInputStream(c.getSelectedFile().getPath());
 					ObjectInputStream objectinputstream = new ObjectInputStream(streamIn);
+					@SuppressWarnings("unchecked")
 					List<Arena> arenas = (List<Arena>) objectinputstream.readObject();
 					Arena arena = arenas.iterator().next();
 					gameOfLifeService.setArena(arena);
@@ -163,5 +165,44 @@ public class MyActionListener implements ActionListener, ChangeListener {
 		if (ce.getSource() == myJFrame.getjSliderSpeed()) {
 			myJFrame.getTimer().setDelay(myJFrame.getjSliderSpeed().getValue() * 50);
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent mouseEvent) {
+		if (mouseEvent.getSource() == myJFrame.getDrawPanel()){
+			int x = mouseEvent.getX()/myJFrame.getDrawPanel().getSizefactor();
+			int y = mouseEvent.getY()/myJFrame.getDrawPanel().getSizefactor();
+			if (gameOfLifeService.getArena().getPoint(x, y).isAlife()){
+				gameOfLifeService.getArena().setPoint(x, y, false);
+			}else{
+				gameOfLifeService.getArena().setPoint(x, y, true);
+			}
+			myJFrame.getDrawPanel().repaint();
+		}
+		
 	}
 }
