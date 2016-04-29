@@ -13,7 +13,6 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -113,7 +112,7 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 			}
 		}
 		if (ae.getSource() == myJFrame.getMenuItemImport()) {
-			ImportFileDialog importFileDialog = new ImportFileDialog(gameOfLifeService);
+			ImportFileDialog importFileDialog = new ImportFileDialog(gameOfLifeService,myJFrame);
 			int i = JOptionPane.showConfirmDialog(myJFrame, importFileDialog, "Import .cell Files",
 					JOptionPane.PLAIN_MESSAGE);
 			if (i == 0) {

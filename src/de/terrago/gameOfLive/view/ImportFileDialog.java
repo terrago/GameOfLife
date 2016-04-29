@@ -23,8 +23,10 @@ public class ImportFileDialog extends JPanel{
 	private Arena arena;
 	private JPanel jScrollPane;
 	private GameOfLifeService gameOfLifeService;
+	private MyJFrame myJFrame;
 	
-	public ImportFileDialog(GameOfLifeService gameOfLifeService){
+	public ImportFileDialog(GameOfLifeService gameOfLifeService, MyJFrame myJFrame){
+		this.myJFrame = myJFrame;
 		this.gameOfLifeService = gameOfLifeService;
 		this.setLayout(new BorderLayout());
 		
@@ -87,8 +89,16 @@ public class ImportFileDialog extends JPanel{
 
 	public void setArena(Arena arena, int count) {
 		this.arena = arena;
+		
+		if (gameOfLifeService.getArena().getWidth() < arena.getWidth() ||
+				gameOfLifeService.getArena().getHeight() < arena.getHeight()){
+			Arena newArena = new Arena(arena.getWidth(),arena.getHeight());
+			gameOfLifeService.setArena(newArena);
+			myJFrame.resizeDrawpanel(newArena);
+		}
+		
+		
 		int sizeFactor = 50/arena.getHeight();
-		resizeDrawpanel(arena, sizeFactor);
 		
 		this.getMyDrawPanel().getPoints().clear();
 		this.getjScrollPane().setBackground(Color.GRAY);
@@ -103,21 +113,7 @@ public class ImportFileDialog extends JPanel{
 		this.jTextField2.setText(Integer.toString(positionYv));
 
 	}
-	public void resizeDrawpanel(Arena arena, int sizeFactor) {
-		this.getMyDrawPanel().setSizefactor(sizeFactor);
-		this.getMyDrawPanel()
-				.setPreferredSize(new Dimension(arena.getWidth() * sizeFactor,
-						arena.getHeight() * sizeFactor));
-		this.getMyDrawPanel().setSize(new Dimension(arena.getWidth() * sizeFactor,
-				arena.getHeight() * sizeFactor));
-		this.getMyDrawPanel()
-				.setMaximumSize(new Dimension(arena.getWidth() * sizeFactor,
-						arena.getHeight() * sizeFactor));
-		this.getMyDrawPanel().update(this.getMyDrawPanel().getGraphics());
-		this.getjScrollPane().update(this.getjScrollPane().getGraphics());
-		this.getMyDrawPanel().repaint();
-		this.paintAll(this.getGraphics());
-	}
+
 
 
 	public MyDrawPanel getMyDrawPanel() {

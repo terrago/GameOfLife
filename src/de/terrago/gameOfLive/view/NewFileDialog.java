@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import de.terrago.gameOfLive.service.GameOfLifeService;
 import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
 
 public class NewFileDialog extends JPanel{
