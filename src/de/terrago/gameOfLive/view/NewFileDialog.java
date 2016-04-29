@@ -17,20 +17,21 @@ public class NewFileDialog extends JPanel{
 	private JComboBox comboBox;
 	private JTextField jTextField1;
 	private JTextField jTextField2;
+	private MyJFrame myJFrame;
 
-	public NewFileDialog(){
+	public NewFileDialog(MyJFrame myJFrame){
+		this.setMyJFrame(myJFrame);
 		this.setLayout(new BorderLayout());
-		
 		JSplitPane splitPaneVTextbox1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		jTextField1 = new JTextField(5);
-		jTextField1.setText("150");
+		jTextField1.setText(Integer.toString(myJFrame.getjScrollPane().getWidth()-20));
 		JLabel jLabel1 = new JLabel("width:");
 		splitPaneVTextbox1.setLeftComponent(jLabel1);
 		splitPaneVTextbox1.setRightComponent(jTextField1);
 		
 		JSplitPane splitPaneVTextbox2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		jTextField2 = new JTextField(5);
-		jTextField2.setText("150");
+		jTextField2.setText(Integer.toString(myJFrame.getjScrollPane().getHeight()-20));
 
 		JLabel jLabel2 = new JLabel("height:");
 		splitPaneVTextbox2.setLeftComponent(jLabel2);
@@ -62,5 +63,13 @@ public class NewFileDialog extends JPanel{
 
 	public JTextField getjTextField2() {
 		return jTextField2;
+	}
+
+	public MyJFrame getMyJFrame() {
+		return myJFrame;
+	}
+
+	public void setMyJFrame(MyJFrame myJFrame) {
+		this.myJFrame = myJFrame;
 	}
 }

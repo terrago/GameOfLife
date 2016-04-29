@@ -10,10 +10,6 @@ public class GameOfLifeService {
 	private Arena arena;
 	private int countGeneration = 0;
 
-	public GameOfLifeService() {
-		
-	}
-
 	public Arena getArena() {
 		return arena;
 	}
@@ -38,9 +34,19 @@ public class GameOfLifeService {
 		return neighbors;
 	}
 
+	public Arena getNewArena(Arena arena){
+		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
+		ret.setTorusWorld(arena.isTorusWorld());
+		for (Point oldArenaPoint : arena.getPoints()) {
+			ret.setPoint(oldArenaPoint.getX(),oldArenaPoint.getY(), oldArenaPoint.isAlife());
+		}
+		return ret;
+		
+	}
+	
 	public Arena getNextGeneration(Arena arena) {
 		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
-		ret.setInfinteWorld(arena.isInfinteWorld());
+		ret.setTorusWorld(arena.isTorusWorld());
 		for (Point oldArenaPoint : arena.getPoints()) {
 			Set<Point> allPossiblePoints = new HashSet<>();
 			allPossiblePoints.add(oldArenaPoint);
@@ -59,16 +65,6 @@ public class GameOfLifeService {
 		}
 		this.countGeneration++;
 		return ret;
-	}
-	
-	public Arena getNewArena(Arena arena){
-		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
-		ret.setInfinteWorld(arena.isInfinteWorld());
-		for (Point oldArenaPoint : arena.getPoints()) {
-			ret.setPoint(oldArenaPoint.getX(),oldArenaPoint.getY(), oldArenaPoint.isAlife());
-		}
-		return ret;
-		
 	}
 
 	private int getNumberofNeighbors(Arena arena, Point toBeChecked) {

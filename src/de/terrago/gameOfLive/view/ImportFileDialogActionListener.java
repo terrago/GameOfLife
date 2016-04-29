@@ -61,6 +61,7 @@ public class ImportFileDialogActionListener implements ActionListener {
 					}
 					importFileDialog.setArena(arena,0);
 					
+					
 				} catch (IOException ioException) {
 					in.close();
 					ioException.printStackTrace();

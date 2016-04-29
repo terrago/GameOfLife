@@ -4,22 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Area;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.terrago.gameOfLive.model.Arena;
+import de.terrago.gameOfLive.service.GameOfLifeService;
 
 public class ImportFileDialog extends JPanel{
 
@@ -29,8 +22,10 @@ public class ImportFileDialog extends JPanel{
 	private MyDrawPanel myDrawPanel;
 	private Arena arena;
 	private JPanel jScrollPane;
+	private GameOfLifeService gameOfLifeService;
 	
-	public ImportFileDialog(){
+	public ImportFileDialog(GameOfLifeService gameOfLifeService){
+		this.gameOfLifeService = gameOfLifeService;
 		this.setLayout(new BorderLayout());
 		
 		JSplitPane splitPaneVTextbox1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -93,20 +88,35 @@ public class ImportFileDialog extends JPanel{
 	public void setArena(Arena arena, int count) {
 		this.arena = arena;
 		int sizeFactor = 50/arena.getHeight();
-		this.getMyDrawPanel().setSizefactor(sizeFactor);
-		this.getMyDrawPanel().setPreferredSize(new Dimension(arena.getWidth()*this.getMyDrawPanel().getSizefactor()
-				, arena.getHeight()*this.getMyDrawPanel().getSizefactor()));
-		this.getMyDrawPanel().setSize(new Dimension(arena.getWidth()*this.getMyDrawPanel().getSizefactor()
-				, arena.getHeight()*this.getMyDrawPanel().getSizefactor()));
+		resizeDrawpanel(arena, sizeFactor);
 		
 		this.getMyDrawPanel().getPoints().clear();
 		this.getjScrollPane().setBackground(Color.GRAY);
 		this.getMyDrawPanel().setBackground(Color.BLACK);
 		this.getMyDrawPanel().setPoints(arena.getPoints());
 		this.getMyDrawPanel().update(this.getMyDrawPanel().getGraphics());
+		this.getMyDrawPanel().repaint();
+		
+		int positionXv = gameOfLifeService.getArena().getWidth()/2-arena.getWidth()/2; 
+		int positionYv = gameOfLifeService.getArena().getHeight()/2-arena.getHeight()/2;
+		this.jTextField1.setText(Integer.toString(positionXv));
+		this.jTextField2.setText(Integer.toString(positionYv));
+
+	}
+	public void resizeDrawpanel(Arena arena, int sizeFactor) {
+		this.getMyDrawPanel().setSizefactor(sizeFactor);
+		this.getMyDrawPanel()
+				.setPreferredSize(new Dimension(arena.getWidth() * sizeFactor,
+						arena.getHeight() * sizeFactor));
+		this.getMyDrawPanel().setSize(new Dimension(arena.getWidth() * sizeFactor,
+				arena.getHeight() * sizeFactor));
+		this.getMyDrawPanel()
+				.setMaximumSize(new Dimension(arena.getWidth() * sizeFactor,
+						arena.getHeight() * sizeFactor));
+		this.getMyDrawPanel().update(this.getMyDrawPanel().getGraphics());
 		this.getjScrollPane().update(this.getjScrollPane().getGraphics());
 		this.getMyDrawPanel().repaint();
-
+		this.paintAll(this.getGraphics());
 	}
 
 

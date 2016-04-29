@@ -1,6 +1,5 @@
 package de.terrago.gameOfLive.view;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -25,7 +25,7 @@ import de.terrago.gameOfLive.service.GameOfLifeService;
 import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
 import de.terrago.utils.Tools;
 
-public class MyActionListener implements ActionListener, ChangeListener,MouseListener {
+public class MyActionListener implements ActionListener, ChangeListener, MouseListener {
 
 	private ArenaModifierService arenaModifierService;
 	private GameOfLifeService gameOfLifeService;
@@ -45,7 +45,7 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == myJFrame.getbNorth()) {
 			if (!myJFrame.getTimer().isRunning()) {
-				myJFrame.setStartArena((Arena)Tools.deepCopy(gameOfLifeService.getArena()));
+				myJFrame.setStartArena((Arena) Tools.deepCopy(gameOfLifeService.getArena()));
 				myJFrame.getTimer().start();
 				myJFrame.getbNorth().setText("stop");
 			} else {
@@ -67,6 +67,7 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 					Arena arena = arenas.iterator().next();
 					gameOfLifeService.setArena(arena);
 					myJFrame.setArena(gameOfLifeService.getArena(), 0);
+					myJFrame.resizeDrawpanel(arena);
 					objectinputstream.close();
 				} catch (Exception E) {
 				}
@@ -82,7 +83,7 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 				arenas.add(gameOfLifeService.getArena());
 				try {
 					String filename = c.getSelectedFile().getPath();
-					if (!filename.endsWith(".gol")){
+					if (!filename.endsWith(".gol")) {
 						filename = filename.concat(".gol");
 					}
 					FileOutputStream fout = new FileOutputStream(filename);
@@ -94,31 +95,35 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 				}
 			}
 		}
-		if (ae.getSource() == myJFrame.getMenuItemNew()){
-			NewFileDialog newFileDialog = new NewFileDialog();
-			int i =JOptionPane.showConfirmDialog(myJFrame,newFileDialog,"New Arena",JOptionPane.PLAIN_MESSAGE);
-			if (i == 0){
+		if (ae.getSource() == myJFrame.getMenuItemNew()) {
+			NewFileDialog newFileDialog = new NewFileDialog(myJFrame);
+			int i = JOptionPane.showConfirmDialog(myJFrame, newFileDialog, "New Arena", JOptionPane.PLAIN_MESSAGE);
+			if (i == 0) {
 				int width = Integer.parseInt(newFileDialog.getjTextField1().getText());
 				int height = Integer.parseInt(newFileDialog.getjTextField2().getText());
-				ArenaModifierEnum arenaModifierEnum = (ArenaModifierEnum)newFileDialog.getComboBox().getSelectedItem();
+				ArenaModifierEnum arenaModifierEnum = (ArenaModifierEnum) newFileDialog.getComboBox().getSelectedItem();
 				newArena(width, height, arenaModifierEnum);
 			}
 		}
-		if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()){
-			gameOfLifeService.setArena(myJFrame.getStartArena());
-			gameOfLifeService.setCountGeneration(0);
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());	
+		if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()) {
+			if (myJFrame.getStartArena() != null) {
+				gameOfLifeService.setArena(myJFrame.getStartArena());
+				gameOfLifeService.setCountGeneration(0);
+				myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+			}
 		}
-		if (ae.getSource()== myJFrame.getMenuItemImport()){
-			ImportFileDialog importFileDialog = new ImportFileDialog();
-			int i = JOptionPane.showConfirmDialog(myJFrame, importFileDialog,"Import .cell Files",JOptionPane.PLAIN_MESSAGE);
-			if (i==0){
+		if (ae.getSource() == myJFrame.getMenuItemImport()) {
+			ImportFileDialog importFileDialog = new ImportFileDialog(gameOfLifeService);
+			int i = JOptionPane.showConfirmDialog(myJFrame, importFileDialog, "Import .cell Files",
+					JOptionPane.PLAIN_MESSAGE);
+			if (i == 0) {
 				Arena cellFileArena = importFileDialog.getArena();
 				gameOfLifeService.setArena(gameOfLifeService.getNewArena(gameOfLifeService.getArena()));
 				int startingPointX = Integer.parseInt(importFileDialog.getjTextField1().getText());
 				int startingPointY = Integer.parseInt(importFileDialog.getjTextField2().getText());
-				for (Point point:cellFileArena.getPoints()){
-					gameOfLifeService.getArena().setPoint(point.getX()+startingPointX, point.getY()+startingPointY, true);
+				for (Point point : cellFileArena.getPoints()) {
+					gameOfLifeService.getArena().setPoint(point.getX() + startingPointX, point.getY() + startingPointY,
+							true);
 				}
 				gameOfLifeService.setCountGeneration(0);
 				myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
@@ -127,22 +132,22 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 		}
 
 		if (ae.getSource() == myJFrame.getbWest()) {
-			gameOfLifeService.getArena().setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
+			gameOfLifeService.getArena().setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
 			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
 		}
 		if (ae.getSource() == myJFrame.getTimer()) {
-			gameOfLifeService.getArena().setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
+			gameOfLifeService.getArena().setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
 			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
 			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
 		}
 
 	}
 
-	private void newArena(int width, int height,ArenaModifierEnum arenaModifierEnum){
+	private void newArena(int width, int height, ArenaModifierEnum arenaModifierEnum) {
 		myJFrame.getTimer().stop();
-		Arena arena = new Arena(width,height);
-		arena.setInfinteWorld(myJFrame.getCheckBoxInfinte().isSelected());
+		Arena arena = new Arena(width, height);
+		arena.setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
 		this.startingPointX = arena.getWidth() / 2;
 		this.startingPointY = arena.getHeight() / 2;
 
@@ -163,43 +168,19 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 			break;
 		}
 		gameOfLifeService.setCountGeneration(0);
-		myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSliderSize().getValue());
-		myJFrame.getDrawPanel()
-				.setPreferredSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
-						arena.getHeight() * myJFrame.getjSliderSize().getValue()));
-		myJFrame.getDrawPanel().setSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
-				arena.getHeight() * myJFrame.getjSliderSize().getValue()));
-		myJFrame.getDrawPanel()
-				.setMaximumSize(new Dimension(arena.getWidth() * myJFrame.getjSliderSize().getValue(),
-						arena.getHeight() * myJFrame.getjSliderSize().getValue()));
 		gameOfLifeService.setArena(arena);
 		myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+		myJFrame.resizeDrawpanel(arena);
 		myJFrame.getDrawPanel().update(myJFrame.getDrawPanel().getGraphics());
 		myJFrame.getjScrollPane().update(myJFrame.getjScrollPane().getGraphics());
 		myJFrame.getDrawPanel().repaint();
 		myJFrame.paintAll(myJFrame.getGraphics());
 	}
-	
-	
+
 	@Override
 	public void stateChanged(ChangeEvent ce) {
 		if (ce.getSource() == myJFrame.getjSliderSize()) {
-			myJFrame.getDrawPanel().setSizefactor(myJFrame.getjSliderSize().getValue());
-			myJFrame.getDrawPanel()
-					.setPreferredSize(new Dimension(
-							gameOfLifeService.getArena().getWidth() * myJFrame.getjSliderSize().getValue(),
-							gameOfLifeService.getArena().getHeight() * myJFrame.getjSliderSize().getValue()));
-			myJFrame.getDrawPanel()
-					.setSize(new Dimension(
-							gameOfLifeService.getArena().getWidth() * myJFrame.getjSliderSize().getValue(),
-							gameOfLifeService.getArena().getHeight() * myJFrame.getjSliderSize().getValue()));
-			myJFrame.getDrawPanel()
-					.setMaximumSize(new Dimension(
-							gameOfLifeService.getArena().getWidth() * myJFrame.getjSliderSize().getValue(),
-							gameOfLifeService.getArena().getHeight() * myJFrame.getjSliderSize().getValue()));
-			myJFrame.getDrawPanel().update(myJFrame.getDrawPanel().getGraphics());
-			myJFrame.getjScrollPane().update(myJFrame.getjScrollPane().getGraphics());
-			myJFrame.getDrawPanel().repaint();
+			myJFrame.resizeDrawpanel(gameOfLifeService.getArena());
 			myJFrame.paintAll(myJFrame.getGraphics());
 		}
 		if (ce.getSource() == myJFrame.getjSliderSpeed()) {
@@ -210,39 +191,40 @@ public class MyActionListener implements ActionListener, ChangeListener,MouseLis
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
-		if (mouseEvent.getSource() == myJFrame.getDrawPanel()){
-			int x = mouseEvent.getX()/myJFrame.getDrawPanel().getSizefactor();
-			int y = mouseEvent.getY()/myJFrame.getDrawPanel().getSizefactor();
-			if (gameOfLifeService.getArena().getPoint(x, y).isAlife()){
+		if (mouseEvent.getSource() == myJFrame.getDrawPanel()) {
+			int x = mouseEvent.getX() / myJFrame.getDrawPanel().getSizefactor();
+			int y = mouseEvent.getY() / myJFrame.getDrawPanel().getSizefactor();
+			if (gameOfLifeService.getArena().getPoint(x, y).isAlife()) {
 				gameOfLifeService.getArena().setPoint(x, y, false);
-			}else{
+			} else {
 				gameOfLifeService.getArena().setPoint(x, y, true);
 			}
+			myJFrame.getDrawPanel().setPoints(gameOfLifeService.getPoints());
 			myJFrame.getDrawPanel().repaint();
 		}
-		
+
 	}
 }

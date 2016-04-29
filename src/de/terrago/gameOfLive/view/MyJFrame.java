@@ -2,6 +2,7 @@ package de.terrago.gameOfLive.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
 import javax.swing.JButton;
@@ -27,7 +28,7 @@ public class MyJFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JButton bNorth,bWest;
-	private JCheckBox checkBoxInfinte;
+	private JCheckBox checkBoxTorus;
 	private JComboBox<String> comboBox;
 	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
@@ -134,8 +135,8 @@ public class MyJFrame extends JFrame {
 		panelButtons.add(bWest, BorderLayout.WEST);
 		JPanel panelCenter = new JPanel();
 
-		checkBoxInfinte = new JCheckBox();
-		checkBoxInfinte.setText("infinte");
+		checkBoxTorus = new JCheckBox();
+		checkBoxTorus.setText("make arena a torus");
 		jSliderSpeed = new JSlider(1, 10, 1);
 		jSliderSpeed.setMajorTickSpacing(1);
 		jSliderSpeed.setMinorTickSpacing(1);
@@ -147,7 +148,7 @@ public class MyJFrame extends JFrame {
 		jPanelTextfields.setLayout(new BorderLayout());
 		panelCenter.setLayout(new BorderLayout());
 		panelCenter.add(jPanelTextfields, BorderLayout.EAST);
-		panelCenter.add(checkBoxInfinte, BorderLayout.WEST);
+		panelCenter.add(checkBoxTorus, BorderLayout.WEST);
 		panelCenter.add(jSliderSpeed, BorderLayout.SOUTH);
 		panelButtons.add(panelCenter, BorderLayout.CENTER);
 	}
@@ -161,8 +162,8 @@ public class MyJFrame extends JFrame {
 		return bWest;
 	}
 
-	public JCheckBox getCheckBoxInfinte() {
-		return checkBoxInfinte;
+	public JCheckBox getCheckBoxTorus() {
+		return checkBoxTorus;
 	}
 
 	public JComboBox<String> getComboBox() {
@@ -211,8 +212,24 @@ public class MyJFrame extends JFrame {
 		this.getjScrollPane().setBackground(Color.GRAY);
 		this.getDrawPanel().setBackground(Color.BLACK);
 		this.getDrawPanel().setPoints(arena.getPoints());
-		this.getDrawPanel().repaint();
 		this.getbWest().setText("step: " + count);
+		this.getDrawPanel().repaint();
+	}
+	
+	public void resizeDrawpanel(Arena arena) {
+		this.getDrawPanel().setSizefactor(this.getjSliderSize().getValue());
+		this.getDrawPanel()
+				.setPreferredSize(new Dimension(arena.getWidth() * this.getjSliderSize().getValue(),
+						arena.getHeight() * this.getjSliderSize().getValue()));
+		this.getDrawPanel().setSize(new Dimension(arena.getWidth() * this.getjSliderSize().getValue(),
+				arena.getHeight() * this.getjSliderSize().getValue()));
+		this.getDrawPanel()
+				.setMaximumSize(new Dimension(arena.getWidth() * this.getjSliderSize().getValue(),
+						arena.getHeight() * this.getjSliderSize().getValue()));
+		this.getDrawPanel().update(this.getDrawPanel().getGraphics());
+		this.getjScrollPane().update(this.getjScrollPane().getGraphics());
+		this.getDrawPanel().repaint();
+		this.paintAll(this.getGraphics());
 	}
 
 	public void setDrawpanel(MyDrawPanel drawpanel) {
