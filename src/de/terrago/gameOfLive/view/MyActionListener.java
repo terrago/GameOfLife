@@ -19,6 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.model.Point;
+import de.terrago.gameOfLive.model.Rule;
 import de.terrago.gameOfLive.service.ArenaModifierService;
 import de.terrago.gameOfLive.service.GameOfLifeService;
 import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
@@ -102,6 +103,9 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 				int height = Integer.parseInt(newFileDialog.getjTextField2().getText());
 				ArenaModifierEnum arenaModifierEnum = (ArenaModifierEnum) newFileDialog.getComboBox().getSelectedItem();
 				newArena(width, height, arenaModifierEnum);
+				Rule rule = new Rule(newFileDialog.getjTextFieldRule().getText());
+				gameOfLifeService.setRule(rule);
+				myJFrame.setTitle("Game of Life "+rule);
 			}
 		}
 		if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()) {

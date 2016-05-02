@@ -5,15 +5,21 @@ import java.util.Set;
 
 import de.terrago.gameOfLive.model.Arena;
 import de.terrago.gameOfLive.model.Point;
+import de.terrago.gameOfLive.model.Rule;
 
 public class GameOfLifeService {
 	private Arena arena;
+	private Rule rule;
 	private int countGeneration = 0;
 
 	public Arena getArena() {
 		return arena;
 	}
 
+	public GameOfLifeService(){
+	 rule = new Rule("23/3");
+	}
+	
 	public int getCountGeneration() {
 		return countGeneration;
 	}
@@ -56,15 +62,20 @@ public class GameOfLifeService {
 			for (Point toBeChecked : allPossiblePoints) {
 				boolean isAlife = false;
 				int numberOfNeighbors = getNumberofNeighbors(arena, toBeChecked);
-				if (toBeChecked.isAlife() && numberOfNeighbors < 4 && numberOfNeighbors > 1)
-					isAlife = true;
-				if (!toBeChecked.isAlife() && numberOfNeighbors == 3)
-					isAlife = true;
+				isAlife = rule.getIsALife(toBeChecked.isAlife(), numberOfNeighbors);
 				ret.setPoint(toBeChecked.getX(), toBeChecked.getY(), isAlife);
 			}
 		}
 		this.countGeneration++;
 		return ret;
+	}
+
+	public Rule getRule() {
+		return rule;
+	}
+
+	public void setRule(Rule rule) {
+		this.rule = rule;
 	}
 
 	private int getNumberofNeighbors(Arena arena, Point toBeChecked) {

@@ -50,7 +50,7 @@ public class MyJFrame extends JFrame {
 		getContentPane().add(topPanel);
 		createPanelButtons();
 		gameOfLifeService.setArena(new ArenaModifierService().getRPentomino(new Arena(150, 150), 75, 75)); 
-		
+		setTitle("Game of Life "+gameOfLifeService.getRule().toString());
 		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
 		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		topPanel.add(splitPaneV, BorderLayout.CENTER);
