@@ -2,7 +2,6 @@ package de.terrago.gameOfLive.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
 import javax.swing.JButton;
