@@ -97,7 +97,7 @@ public class ImportFileDialog extends JPanel{
 		}
 		
 		
-		int sizeFactor = 50/arena.getHeight();
+		//int sizeFactor = 50/arena.getHeight();
 		
 		this.getMyDrawPanel().getPoints().clear();
 		this.getjScrollPane().setBackground(Color.GRAY);
