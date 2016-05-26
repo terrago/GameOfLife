@@ -13,7 +13,8 @@ import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
 
 public class NewFileDialog extends JPanel{
 
-	private JComboBox comboBox;
+	private static final long serialVersionUID = 1L;
+	private JComboBox<ArenaModifierEnum> comboBox;
 	private JTextField jTextField1;
 	private JTextField jTextField2;
 	private JTextField jTextFieldRule;
@@ -52,8 +53,8 @@ public class NewFileDialog extends JPanel{
 		splitPaneV.setTopComponent(splitPaneTextFields1);
 		
 		
-		comboBox = new JComboBox<String>();
-		comboBox.setModel(new DefaultComboBoxModel(ArenaModifierEnum.values()));
+		comboBox = new JComboBox<ArenaModifierEnum>();
+		comboBox.setModel(new DefaultComboBoxModel<ArenaModifierEnum>(ArenaModifierEnum.values()));
 		
 		JSplitPane splitPaneTextFields2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPaneTextFields2.setTopComponent(splitPaneVTextbox3);
@@ -67,11 +68,7 @@ public class NewFileDialog extends JPanel{
 		this.repaint();
 	}
 
-	public JTextField getjTextFieldRule() {
-		return jTextFieldRule;
-	}
-
-	public JComboBox getComboBox() {
+	public JComboBox<ArenaModifierEnum> getComboBox() {
 		return comboBox;
 	}
 
@@ -81,6 +78,10 @@ public class NewFileDialog extends JPanel{
 
 	public JTextField getjTextField2() {
 		return jTextField2;
+	}
+
+	public JTextField getjTextFieldRule() {
+		return jTextFieldRule;
 	}
 
 	public MyJFrame getMyJFrame() {
