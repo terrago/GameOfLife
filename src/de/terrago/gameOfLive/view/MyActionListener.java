@@ -121,7 +121,7 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 					JOptionPane.PLAIN_MESSAGE);
 			if (i == 0) {
 				Arena cellFileArena = importFileDialog.getArena();
-				gameOfLifeService.setArena(gameOfLifeService.getNewArena(gameOfLifeService.getArena()));
+				gameOfLifeService.setArena(gameOfLifeService.cloneArena(gameOfLifeService.getArena()));
 				int startingPointX = Integer.parseInt(importFileDialog.getjTextField1().getText());
 				int startingPointY = Integer.parseInt(importFileDialog.getjTextField2().getText());
 				for (Point point : cellFileArena.getPoints()) {

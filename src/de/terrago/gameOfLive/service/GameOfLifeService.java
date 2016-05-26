@@ -40,7 +40,7 @@ public class GameOfLifeService {
 		return neighbors;
 	}
 
-	public Arena getNewArena(Arena arena){
+	public Arena cloneArena(Arena arena){
 		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
 		ret.setTorusWorld(arena.isTorusWorld());
 		for (Point oldArenaPoint : arena.getPoints()) {
