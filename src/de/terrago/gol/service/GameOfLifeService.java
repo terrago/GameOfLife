@@ -11,13 +11,13 @@ public class GameOfLifeService {
 	private Arena arena;
 	private Rule rule;
 	private int countGeneration = 0;
+	
+	public GameOfLifeService(){
+		 rule = new Rule("23/3");
+		}
 
 	public Arena getArena() {
 		return arena;
-	}
-
-	public GameOfLifeService(){
-	 rule = new Rule("23/3");
 	}
 	
 	public int getCountGeneration() {
@@ -60,9 +60,8 @@ public class GameOfLifeService {
 				allPossiblePoints.add(addPoint);
 			}
 			for (Point toBeChecked : allPossiblePoints) {
-				boolean isAlife = false;
 				int numberOfNeighbors = getNumberofNeighbors(arena, toBeChecked);
-				isAlife = rule.getIsALife(toBeChecked.isAlife(), numberOfNeighbors);
+				boolean isAlife = rule.getIsALife(toBeChecked.isAlife(), numberOfNeighbors);
 				ret.setPoint(toBeChecked.getX(), toBeChecked.getY(), isAlife);
 			}
 		}

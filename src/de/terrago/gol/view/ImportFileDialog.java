@@ -21,7 +21,7 @@ public class ImportFileDialog extends JPanel{
 	private MyDrawPanel myDrawPanel;
 	private Arena arena;
 	private JPanel jScrollPane;
-	private GameOfLifeService gameOfLifeService;
+	private transient GameOfLifeService gameOfLifeService;
 	private MyJFrame myJFrame;
 	
 	public ImportFileDialog(GameOfLifeService gameOfLifeService, MyJFrame myJFrame){
@@ -86,7 +86,7 @@ public class ImportFileDialog extends JPanel{
 	}
 
 
-	public void setArena(Arena arena, int count) {
+	public void setArena(Arena arena) {
 		this.arena = arena;
 		
 		if (gameOfLifeService.getArena().getWidth() < arena.getWidth() ||
@@ -95,9 +95,6 @@ public class ImportFileDialog extends JPanel{
 			gameOfLifeService.setArena(newArena);
 			myJFrame.resizeDrawpanel(newArena);
 		}
-		
-		
-		//int sizeFactor = 50/arena.getHeight();
 		
 		this.getMyDrawPanel().getPoints().clear();
 		this.getjScrollPane().setBackground(Color.GRAY);

@@ -69,7 +69,8 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 					myJFrame.setArena(gameOfLifeService.getArena(), 0);
 					myJFrame.resizeDrawpanel(arena);
 					objectinputstream.close();
-				} catch (Exception E) {
+				} catch (Exception e){
+					
 				}
 			}
 		}
@@ -79,7 +80,7 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 			c.setFileFilter(filter);
 			int rVal = c.showSaveDialog(myJFrame);
 			if (rVal == JFileChooser.APPROVE_OPTION) {
-				List<Arena> arenas = new ArrayList<Arena>();
+				List<Arena> arenas = new ArrayList<>();
 				arenas.add(gameOfLifeService.getArena());
 				try {
 					String filename = c.getSelectedFile().getPath();
@@ -91,7 +92,7 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 					oos.writeObject(arenas);
 					fout.close();
 					oos.close();
-				} catch (Exception E) {
+				} catch (Exception e) {
 				}
 			}
 		}
@@ -193,26 +194,22 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// is needed by implementation
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// is needed by implementation
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// is needed by implementation
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// is needed by implementation
 	}
 
 	@Override

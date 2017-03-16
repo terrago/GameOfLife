@@ -7,8 +7,8 @@ import java.util.List;
 public class Rule implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private List<Integer> spawn = new ArrayList<Integer>();
-	private List<Integer> stayAlife = new ArrayList<Integer>();
+	private List<Integer> spawn = new ArrayList<>();
+	private List<Integer> stayAlife = new ArrayList<>();
 
 	public Rule(List<Integer> stayAlife, List<Integer> spawn) {
 		this.stayAlife = stayAlife;
@@ -16,9 +16,9 @@ public class Rule implements Serializable {
 	}
 
 	public Rule(String stRule) {
-		String stayAlife = stRule.substring(0, stRule.indexOf('/', 0));
-		String spawn = stRule.substring(stRule.indexOf('/', 0) + 1, stRule.length());
-		setRules(stayAlife, spawn);
+		String strStayAlife = stRule.substring(0, stRule.indexOf('/', 0));
+		String strSpawn = stRule.substring(stRule.indexOf('/', 0) + 1, stRule.length());
+		setRules(strStayAlife, strSpawn);
 	}
 
 	public Rule(String stayAlife, String spawn) {

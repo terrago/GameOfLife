@@ -59,7 +59,7 @@ public class ImportFileDialogActionListener implements ActionListener {
 					for (Point point:points){
 						arena.setPoint(point.getX(), point.getY(), true);
 					}
-					importFileDialog.setArena(arena,0);
+					importFileDialog.setArena(arena);
 					
 					
 				} catch (IOException ioException) {
