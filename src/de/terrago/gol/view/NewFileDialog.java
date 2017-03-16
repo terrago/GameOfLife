@@ -1,4 +1,4 @@
-package de.terrago.gameOfLive.view;
+package de.terrago.gol.view;
 
 import java.awt.BorderLayout;
 
@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
+import de.terrago.gol.service.enums.ArenaModifierEnum;
 
 public class NewFileDialog extends JPanel{
 

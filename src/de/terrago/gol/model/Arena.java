@@ -1,4 +1,4 @@
-package de.terrago.gameOfLive.model;
+package de.terrago.gol.model;
 
 import java.io.Serializable;
 import java.util.HashMap;

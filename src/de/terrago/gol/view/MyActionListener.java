@@ -1,4 +1,4 @@
-package de.terrago.gameOfLive.view;
+package de.terrago.gol.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,12 +17,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import de.terrago.gameOfLive.model.Arena;
-import de.terrago.gameOfLive.model.Point;
-import de.terrago.gameOfLive.model.Rule;
-import de.terrago.gameOfLive.service.ArenaModifierService;
-import de.terrago.gameOfLive.service.GameOfLifeService;
-import de.terrago.gameOfLive.service.enums.ArenaModifierEnum;
+import de.terrago.gol.model.Arena;
+import de.terrago.gol.model.Point;
+import de.terrago.gol.model.Rule;
+import de.terrago.gol.service.ArenaModifierService;
+import de.terrago.gol.service.GameOfLifeService;
+import de.terrago.gol.service.enums.ArenaModifierEnum;
 import de.terrago.utils.Tools;
 
 public class MyActionListener implements ActionListener, ChangeListener, MouseListener {

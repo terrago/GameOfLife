@@ -1,4 +1,4 @@
-package de.terrago.gameOfLive.view;
+package de.terrago.gol.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import de.terrago.gameOfLive.model.Arena;
-import de.terrago.gameOfLive.service.GameOfLifeService;
+import de.terrago.gol.model.Arena;
+import de.terrago.gol.service.GameOfLifeService;
 
 public class ImportFileDialog extends JPanel{
 

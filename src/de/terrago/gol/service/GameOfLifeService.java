@@ -1,11 +1,11 @@
-package de.terrago.gameOfLive.service;
+package de.terrago.gol.service;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import de.terrago.gameOfLive.model.Arena;
-import de.terrago.gameOfLive.model.Point;
-import de.terrago.gameOfLive.model.Rule;
+import de.terrago.gol.model.Arena;
+import de.terrago.gol.model.Point;
+import de.terrago.gol.model.Rule;
 
 public class GameOfLifeService {
 	private Arena arena;
