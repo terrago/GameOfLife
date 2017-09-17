@@ -2,19 +2,14 @@ package de.terrago.gol.view;
 
 import java.awt.BorderLayout;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import de.terrago.gol.service.enums.ArenaModifierEnum;
-
 public class NewFileDialog extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-	private JComboBox<ArenaModifierEnum> comboBox;
 	private JTextField jTextField1;
 	private JTextField jTextField2;
 	private JTextField jTextFieldRule;
@@ -25,14 +20,14 @@ public class NewFileDialog extends JPanel{
 		this.setLayout(new BorderLayout());
 		JSplitPane splitPaneVTextbox1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		jTextField1 = new JTextField(5);
-		jTextField1.setText(Integer.toString(myJFrame.getjScrollPane().getWidth()-20));
+		jTextField1.setText(Integer.toString(((myJFrame.getjTrueScrollPane().getWidth())-20)/myJFrame.getDrawPanel().getSizefactor()));
 		JLabel jLabel1 = new JLabel("width:");
 		splitPaneVTextbox1.setLeftComponent(jLabel1);
 		splitPaneVTextbox1.setRightComponent(jTextField1);
 		
 		JSplitPane splitPaneVTextbox2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		jTextField2 = new JTextField(5);
-		jTextField2.setText(Integer.toString(myJFrame.getjScrollPane().getHeight()-20));
+		jTextField2.setText(Integer.toString((myJFrame.getjTrueScrollPane().getHeight()-20)/myJFrame.getDrawPanel().getSizefactor()));
 		JLabel jLabel2 = new JLabel("height:");
 		splitPaneVTextbox2.setLeftComponent(jLabel2);
 		splitPaneVTextbox2.setRightComponent(jTextField2);
@@ -52,13 +47,8 @@ public class NewFileDialog extends JPanel{
 		JSplitPane splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPaneV.setTopComponent(splitPaneTextFields1);
 		
-		
-		comboBox = new JComboBox<ArenaModifierEnum>();
-		comboBox.setModel(new DefaultComboBoxModel<ArenaModifierEnum>(ArenaModifierEnum.values()));
-		
 		JSplitPane splitPaneTextFields2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPaneTextFields2.setTopComponent(splitPaneVTextbox3);
-		splitPaneTextFields2.setBottomComponent(comboBox);
 		
 		splitPaneV.setTopComponent(splitPaneTextFields1);
 		splitPaneV.setBottomComponent(splitPaneTextFields2);
@@ -66,10 +56,6 @@ public class NewFileDialog extends JPanel{
 		this.validate();
 		this.setVisible(true);
 		this.repaint();
-	}
-
-	public JComboBox<ArenaModifierEnum> getComboBox() {
-		return comboBox;
 	}
 
 	public JTextField getjTextField1() {

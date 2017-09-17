@@ -4,173 +4,234 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import de.terrago.gol.model.Arena;
 import de.terrago.gol.model.Point;
 import de.terrago.gol.model.Rule;
-import de.terrago.gol.service.ArenaModifierService;
+import de.terrago.gol.service.ArenaService;
 import de.terrago.gol.service.GameOfLifeService;
-import de.terrago.gol.service.enums.ArenaModifierEnum;
 import de.terrago.utils.Tools;
 
 public class MyActionListener implements ActionListener, ChangeListener, MouseListener {
 
-	private ArenaModifierService arenaModifierService;
 	private GameOfLifeService gameOfLifeService;
 	private MyJFrame myJFrame;
-	private int startingPointX;
-	private int startingPointY;
 
 	public MyActionListener(GameOfLifeService gameOfLifeService, MyJFrame myJFrame) {
 		this.gameOfLifeService = gameOfLifeService;
 		this.myJFrame = myJFrame;
-		this.startingPointX = gameOfLifeService.getArena().getWidth() / 2;
-		this.startingPointY = gameOfLifeService.getArena().getHeight() / 2;
-		arenaModifierService = new ArenaModifierService();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if (ae.getSource() == myJFrame.getbNorth()) {
-			if (!myJFrame.getTimer().isRunning()) {
-				myJFrame.setStartArena((Arena) Tools.deepCopy(gameOfLifeService.getArena()));
-				myJFrame.getTimer().start();
-				myJFrame.getbNorth().setText("stop");
-			} else {
-				myJFrame.getTimer().stop();
-				myJFrame.getbNorth().setText("start");
-			}
-		}
-		if (ae.getSource() == myJFrame.getMenuItemOpen()) {
-			JFileChooser c = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("GOL-Files", "gol");
-			c.setFileFilter(filter);
-			int rVal = c.showOpenDialog(myJFrame);
-			if (rVal == JFileChooser.APPROVE_OPTION) {
-				try {
-					FileInputStream streamIn = new FileInputStream(c.getSelectedFile().getPath());
-					ObjectInputStream objectinputstream = new ObjectInputStream(streamIn);
-					@SuppressWarnings("unchecked")
-					List<Arena> arenas = (List<Arena>) objectinputstream.readObject();
-					Arena arena = arenas.iterator().next();
-					gameOfLifeService.setArena(arena);
-					myJFrame.setArena(gameOfLifeService.getArena(), 0);
-					myJFrame.resizeDrawpanel(arena);
-					objectinputstream.close();
-				} catch (Exception e){
-					
+		if (myJFrame != null) {
+			if (ae.getSource() == myJFrame.getbNorth()) {
+				if (!myJFrame.getTimer().isRunning()) {
+					myJFrame.setStartArena((Arena) Tools.deepCopy(gameOfLifeService.getArena()));
+					myJFrame.getTimer().start();
+					myJFrame.getbNorth().setText("stop");
+				} else {
+					myJFrame.getTimer().stop();
+					myJFrame.getbNorth().setText("start");
 				}
 			}
-		}
-		if (ae.getSource() == myJFrame.getMenuItemSave()) {
-			JFileChooser c = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("GOL-Files", "gol");
-			c.setFileFilter(filter);
-			int rVal = c.showSaveDialog(myJFrame);
-			if (rVal == JFileChooser.APPROVE_OPTION) {
-				List<Arena> arenas = new ArrayList<>();
-				arenas.add(gameOfLifeService.getArena());
-				try {
-					String filename = c.getSelectedFile().getPath();
-					if (!filename.endsWith(".gol")) {
-						filename = filename.concat(".gol");
-					}
-					FileOutputStream fout = new FileOutputStream(filename);
-					ObjectOutputStream oos = new ObjectOutputStream(fout);
-					oos.writeObject(arenas);
-					fout.close();
-					oos.close();
-				} catch (Exception e) {
+
+			if (ae.getSource() == myJFrame.getMenuItemNew()) {
+				NewFileDialog newFileDialog = new NewFileDialog(myJFrame);
+				int i = JOptionPane.showConfirmDialog(myJFrame, newFileDialog, "New Arena", JOptionPane.PLAIN_MESSAGE);
+				if (i == 0) {
+					int width = Integer.parseInt(newFileDialog.getjTextField1().getText());
+					int height = Integer.parseInt(newFileDialog.getjTextField2().getText());
+					newArena(width, height);
+					Rule rule = new Rule(newFileDialog.getjTextFieldRule().getText());
+					gameOfLifeService.setRule(rule);
+					myJFrame.setTitle("Game of Life " + rule);
 				}
 			}
-		}
-		if (ae.getSource() == myJFrame.getMenuItemNew()) {
-			NewFileDialog newFileDialog = new NewFileDialog(myJFrame);
-			int i = JOptionPane.showConfirmDialog(myJFrame, newFileDialog, "New Arena", JOptionPane.PLAIN_MESSAGE);
-			if (i == 0) {
-				int width = Integer.parseInt(newFileDialog.getjTextField1().getText());
-				int height = Integer.parseInt(newFileDialog.getjTextField2().getText());
-				ArenaModifierEnum arenaModifierEnum = (ArenaModifierEnum) newFileDialog.getComboBox().getSelectedItem();
-				newArena(width, height, arenaModifierEnum);
-				Rule rule = new Rule(newFileDialog.getjTextFieldRule().getText());
-				gameOfLifeService.setRule(rule);
-				myJFrame.setTitle("Game of Life "+rule);
+			if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()) {
+				if (myJFrame.getStartArena() != null) {
+					gameOfLifeService.setArena(myJFrame.getStartArena());
+					gameOfLifeService.setCountGeneration(0);
+					myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+				}
 			}
-		}
-		if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()) {
-			if (myJFrame.getStartArena() != null) {
-				gameOfLifeService.setArena(myJFrame.getStartArena());
-				gameOfLifeService.setCountGeneration(0);
+			if (ae.getSource() == myJFrame.getMenuItemImport()) {
+				importCellFile();
+			}
+			if (ae.getSource() == myJFrame.getMenuItemExport()) {
+				exportCellFile();
+			}
+
+			if (ae.getSource() == myJFrame.getbWest()) {
+				gameOfLifeService.getArena().setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
+				gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
 				myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
 			}
-		}
-		if (ae.getSource() == myJFrame.getMenuItemImport()) {
-			ImportFileDialog importFileDialog = new ImportFileDialog(gameOfLifeService,myJFrame);
-			int i = JOptionPane.showConfirmDialog(myJFrame, importFileDialog, "Import .cell Files",
-					JOptionPane.PLAIN_MESSAGE);
-			if (i == 0) {
-				Arena cellFileArena = importFileDialog.getArena();
-				gameOfLifeService.setArena(gameOfLifeService.cloneArena(gameOfLifeService.getArena()));
-				int startingPointX = Integer.parseInt(importFileDialog.getjTextField1().getText());
-				int startingPointY = Integer.parseInt(importFileDialog.getjTextField2().getText());
-				for (Point point : cellFileArena.getPoints()) {
-					gameOfLifeService.getArena().setPoint(point.getX() + startingPointX, point.getY() + startingPointY,
-							true);
-				}
-				gameOfLifeService.setCountGeneration(0);
+			if (ae.getSource() == myJFrame.getTimer()) {
+				gameOfLifeService.getArena().setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
+				gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
 				myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
-
 			}
-		}
+			if (ae.getSource() == myJFrame.getMenuItemResizeToFullscreen()) {
+				resizeArenaToViewport();
+			}
 
-		if (ae.getSource() == myJFrame.getbWest()) {
-			gameOfLifeService.getArena().setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
-			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
-		}
-		if (ae.getSource() == myJFrame.getTimer()) {
-			gameOfLifeService.getArena().setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
-			gameOfLifeService.setArena(gameOfLifeService.getNextGeneration(gameOfLifeService.getArena()));
-			myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+			if (ae.getSource() == myJFrame.getMenuItemResizeToMinimum()) {
+				gameOfLifeService.setArena(ArenaService.getMinimalArena(gameOfLifeService.getArena()));
+				myJFrame.setArena(gameOfLifeService.getArena(), 0);
+				myJFrame.resizeDrawpanel(gameOfLifeService.getArena());
+			}
 		}
 
 	}
 
-	private void newArena(int width, int height, ArenaModifierEnum arenaModifierEnum) {
+	private void resizeArenaToViewport() {
+		Arena arena = new Arena(
+				(myJFrame.getjTrueScrollPane().getWidth() - 20) / myJFrame.getDrawPanel().getSizefactor(),
+				(myJFrame.getjTrueScrollPane().getHeight() - 20) / myJFrame.getDrawPanel().getSizefactor());
+		int startingPointX;
+		int startingPointY;
+		startingPointX = (arena.getWidth() - gameOfLifeService.getArena().getWidth()) / 2;
+		startingPointY = (arena.getHeight() - gameOfLifeService.getArena().getHeight()) / 2;
+		for (Point point : gameOfLifeService.getArena().getPoints()) {
+			ArenaService.setPoint(arena, point.getX() + startingPointX, point.getY() + startingPointY, true);
+		}
+		arena.setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
+		gameOfLifeService.setArena(arena);
+		myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+		myJFrame.resizeDrawpanel(arena);
+	}
+
+	private void exportCellFile() {
+		JFileChooser c = new JFileChooser();
+		c.setCurrentDirectory(new java.io.File("./resources/cellFiles"));
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("CELL-Files", "cells");
+		c.setFileFilter(filter);
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+		int rVal = c.showSaveDialog(myJFrame);
+		if (rVal == JFileChooser.APPROVE_OPTION) {
+			try {
+				String filename = c.getSelectedFile().getPath();
+				if (!filename.endsWith(".cells")) {
+					filename = filename.concat(".cells");
+				}
+				fw = new FileWriter(filename);
+				bw = new BufferedWriter(fw);
+				for (int y = 0; y <= gameOfLifeService.getArena().getHeight() - 1; y++) {
+					for (int x = 0; x <= gameOfLifeService.getArena().getWidth() - 1; x++) {
+						Point point = ArenaService.getPoint(gameOfLifeService.getArena(), x, y);
+						if (point.isAlife()) {
+							bw.write("O");
+						} else {
+							bw.write(".");
+						}
+					}
+					bw.newLine();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (bw != null)
+						bw.close();
+					if (fw != null)
+						fw.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private void importCellFile() {
+		JFileChooser c = new JFileChooser();
+		c.setCurrentDirectory(new java.io.File("./resources/cellFiles"));
+		Action details = c.getActionMap().get("viewTypeDetails");
+		details.actionPerformed(null);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("CELL-Files", "cells");
+		c.setFileFilter(filter);
+		BufferedReader in = null;
+		if (c.showOpenDialog(myJFrame) == JFileChooser.APPROVE_OPTION) {
+			try {
+				in = new BufferedReader(new FileReader(c.getSelectedFile().getPath()));
+				String line = null;
+				int lineCounter = 0;
+				Set<Point> points = new HashSet<Point>();
+				while ((line = in.readLine()) != null) {
+					if (!line.startsWith("!")) {
+						char[] cline = line.toCharArray();
+						int charCounter = 0;
+						for (char ch : cline) {
+							if (ch == 'O')
+								points.add(new Point(charCounter, lineCounter));
+							charCounter++;
+						}
+						lineCounter++;
+					}
+				}
+				in.close();
+				int maxX = 0;
+				for (Point point : points) {
+					if (point.getX() > maxX)
+						maxX = point.getX();
+				}
+				Arena arena = new Arena(maxX + 1, lineCounter);
+				for (Point point : points) {
+					ArenaService.setPoint(arena, point.getX(), point.getY(), true);
+				}
+				Arena minimumArena = ArenaService.getMinimalArena(arena);
+				int sizeFactor = 0;
+				for (int i = 1; i < myJFrame.getjSliderSize().getMaximum()+1; i++) {
+					int possibleWidth = (myJFrame.getjTrueScrollPane().getWidth() - 20) / i;
+					int possiblehight = (myJFrame.getjTrueScrollPane().getHeight() - 20) / i;
+					if (possiblehight>=minimumArena.getHeight()
+							&&  possibleWidth >=minimumArena.getWidth())
+						sizeFactor = i;
+				}
+				if (sizeFactor>0) {
+					myJFrame.getjSliderSize().setValue(sizeFactor);
+				}else {
+					myJFrame.getjSliderSize().setValue(1);
+				}
+
+				gameOfLifeService.setArena(arena);
+				gameOfLifeService.setCountGeneration(0);
+				myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
+				myJFrame.resizeDrawpanel(arena);
+				if (myJFrame.getMenuItemResizeByOpen().isSelected()&& sizeFactor>0) {
+					resizeArenaToViewport();
+				}
+			} catch (IOException ioException) {
+				ioException.printStackTrace();
+			} finally {
+				try {
+					if (in != null)
+						in.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private void newArena(int width, int height) {
 		myJFrame.getTimer().stop();
 		Arena arena = new Arena(width, height);
 		arena.setTorusWorld(myJFrame.getCheckBoxTorus().isSelected());
-		this.startingPointX = arena.getWidth() / 2;
-		this.startingPointY = arena.getHeight() / 2;
-
-		switch (arenaModifierEnum) {
-		case RPENTOMINO:
-			arena = arenaModifierService.getRPentomino(arena, startingPointX, startingPointY);
-			break;
-		case DOUBLEU:
-			arena = arenaModifierService.getDoubleU(arena, startingPointX, startingPointY);
-			break;
-		case BLINKER:
-			arena = arenaModifierService.getBlinker(arena, startingPointX, startingPointY);
-			break;
-		case LWSS:
-			arena = arenaModifierService.getLwss(arena, startingPointX, startingPointY);
-			break;
-		default:
-			break;
-		}
 		gameOfLifeService.setCountGeneration(0);
 		gameOfLifeService.setArena(arena);
 		myJFrame.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
@@ -188,7 +249,7 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 			myJFrame.paintAll(myJFrame.getGraphics());
 		}
 		if (ce.getSource() == myJFrame.getjSliderSpeed()) {
-			myJFrame.getTimer().setDelay(myJFrame.getjSliderSpeed().getValue() * 50);
+			myJFrame.getTimer().setDelay(myJFrame.getjSliderSpeed().getValue() * 10);
 		}
 	}
 
@@ -217,14 +278,13 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 		if (mouseEvent.getSource() == myJFrame.getDrawPanel()) {
 			int x = mouseEvent.getX() / myJFrame.getDrawPanel().getSizefactor();
 			int y = mouseEvent.getY() / myJFrame.getDrawPanel().getSizefactor();
-			if (gameOfLifeService.getArena().getPoint(x, y).isAlife()) {
-				gameOfLifeService.getArena().setPoint(x, y, false);
+			if (ArenaService.getPoint(gameOfLifeService.getArena(), x, y).isAlife()) {
+				ArenaService.setPoint(gameOfLifeService.getArena(), x, y, false);
 			} else {
-				gameOfLifeService.getArena().setPoint(x, y, true);
+				ArenaService.setPoint(gameOfLifeService.getArena(), x, y, true);
 			}
 			myJFrame.getDrawPanel().setPoints(gameOfLifeService.getPoints());
 			myJFrame.getDrawPanel().repaint();
 		}
-
 	}
 }

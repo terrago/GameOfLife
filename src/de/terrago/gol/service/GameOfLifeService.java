@@ -11,15 +11,16 @@ public class GameOfLifeService {
 	private Arena arena;
 	private Rule rule;
 	private int countGeneration = 0;
-	
-	public GameOfLifeService(){
-		 rule = new Rule("23/3");
-		}
+
+	public GameOfLifeService() {
+		rule = new Rule("23/3");
+
+	}
 
 	public Arena getArena() {
 		return arena;
 	}
-	
+
 	public int getCountGeneration() {
 		return countGeneration;
 	}
@@ -27,29 +28,29 @@ public class GameOfLifeService {
 	private Point[] getNeighbors(Arena arena, Point toBeChecked) {
 		Point[] neighbors = new Point[8];
 		// add upper row
-		neighbors[0] = arena.getPoint(toBeChecked.getX() - 1, toBeChecked.getY() - 1);
-		neighbors[1] = arena.getPoint(toBeChecked.getX(), toBeChecked.getY() - 1);
-		neighbors[2] = arena.getPoint(toBeChecked.getX() + 1, toBeChecked.getY() - 1);
+		neighbors[0] = ArenaService.getPoint(arena, toBeChecked.getX() - 1, toBeChecked.getY() - 1);
+		neighbors[1] = ArenaService.getPoint(arena, toBeChecked.getX(), toBeChecked.getY() - 1);
+		neighbors[2] = ArenaService.getPoint(arena, toBeChecked.getX() + 1, toBeChecked.getY() - 1);
 		// add middle row
-		neighbors[3] = arena.getPoint(toBeChecked.getX() - 1, toBeChecked.getY());
-		neighbors[4] = arena.getPoint(toBeChecked.getX() + 1, toBeChecked.getY());
+		neighbors[3] = ArenaService.getPoint(arena, toBeChecked.getX() - 1, toBeChecked.getY());
+		neighbors[4] = ArenaService.getPoint(arena, toBeChecked.getX() + 1, toBeChecked.getY());
 		// add lower row
-		neighbors[5] = arena.getPoint(toBeChecked.getX() - 1, toBeChecked.getY() + 1);
-		neighbors[6] = arena.getPoint(toBeChecked.getX(), toBeChecked.getY() + 1);
-		neighbors[7] = arena.getPoint(toBeChecked.getX() + 1, toBeChecked.getY() + 1);
+		neighbors[5] = ArenaService.getPoint(arena, toBeChecked.getX() - 1, toBeChecked.getY() + 1);
+		neighbors[6] = ArenaService.getPoint(arena, toBeChecked.getX(), toBeChecked.getY() + 1);
+		neighbors[7] = ArenaService.getPoint(arena, toBeChecked.getX() + 1, toBeChecked.getY() +1);
 		return neighbors;
 	}
 
-	public Arena cloneArena(Arena arena){
+	public Arena cloneArena(Arena arena) {
 		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
 		ret.setTorusWorld(arena.isTorusWorld());
 		for (Point oldArenaPoint : arena.getPoints()) {
-			ret.setPoint(oldArenaPoint.getX(),oldArenaPoint.getY(), oldArenaPoint.isAlife());
+			ArenaService.setPoint(ret, oldArenaPoint.getX(), oldArenaPoint.getY(), oldArenaPoint.isAlife());
 		}
 		return ret;
-		
+
 	}
-	
+
 	public Arena getNextGeneration(Arena arena) {
 		Arena ret = new Arena(arena.getWidth(), arena.getHeight());
 		ret.setTorusWorld(arena.isTorusWorld());
@@ -62,7 +63,7 @@ public class GameOfLifeService {
 			for (Point toBeChecked : allPossiblePoints) {
 				int numberOfNeighbors = getNumberofNeighbors(arena, toBeChecked);
 				boolean isAlife = rule.getIsALife(toBeChecked.isAlife(), numberOfNeighbors);
-				ret.setPoint(toBeChecked.getX(), toBeChecked.getY(), isAlife);
+				ArenaService.setPoint(ret, toBeChecked.getX(), toBeChecked.getY(), isAlife);
 			}
 		}
 		this.countGeneration++;

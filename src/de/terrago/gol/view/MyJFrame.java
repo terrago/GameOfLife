@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -20,7 +21,6 @@ import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 
 import de.terrago.gol.model.Arena;
-import de.terrago.gol.service.ArenaModifierService;
 import de.terrago.gol.service.GameOfLifeService;
 
 public class MyJFrame extends JFrame {
@@ -34,13 +34,26 @@ public class MyJFrame extends JFrame {
 	private GameOfLifeService gameOfLifeService;
 	private JPanel jScrollPane,panelButtons;
 	private JSlider jSliderSize,jSliderSpeed;
-	private JMenu menuFile,menuEdit;
+	private JScrollPane jTrueScrollPane;
 	private JMenuBar menuBar;
-	private JMenuItem menuItemOpen,menuItemSave,menuItemNew,menuItemBackToLastStart
-	,menuItemImport;
+	private JMenu menuFile,menuEdit,menuPreferences;
+	public JMenu getMenuPreferences() {
+		return menuPreferences;
+	}
+
+	public void setMenuPreferences(JMenu menuPreferences) {
+		this.menuPreferences = menuPreferences;
+	}
+
+	public JCheckBoxMenuItem getMenuItemResizeByOpen() {
+		return menuItemResizeByOpen;
+	}
+
+	private JMenuItem menuItemNew,menuItemBackToLastStart,menuItemImport,menuItemExport,menuItemResizeToFullscreen,menuItemResizeToMinimum;
+	private JCheckBoxMenuItem menuItemResizeByOpen;
 	private JSplitPane splitPaneH,splitPaneV;
-	private Timer timer;
 	private Arena startArena;
+	private Timer timer;
 
 	public MyJFrame(GameOfLifeService gameOfLifeService) {
 		this.gameOfLifeService = gameOfLifeService;
@@ -49,12 +62,12 @@ public class MyJFrame extends JFrame {
 		topPanel.setLayout(new BorderLayout());
 		getContentPane().add(topPanel);
 		createPanelButtons();
-		gameOfLifeService.setArena(new ArenaModifierService().getRPentomino(new Arena(150, 150), 75, 75)); 
+		gameOfLifeService.setArena(new Arena(75, 75)); 
 		setTitle("Game of Life "+gameOfLifeService.getRule().toString());
 		drawPanel = new MyDrawPanel(gameOfLifeService.getArena().getWidth(), gameOfLifeService.getArena().getHeight());
 		splitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		topPanel.add(splitPaneV, BorderLayout.CENTER);
-		jSliderSize = new JSlider(1, 5, 1);
+		jSliderSize = new JSlider(1, 10, 1);
 		jSliderSize.setMajorTickSpacing(1);
 		jSliderSize.setMinorTickSpacing(1);
 		jSliderSize.createStandardLabels(1);
@@ -69,15 +82,15 @@ public class MyJFrame extends JFrame {
 		jScrollPane.setLayout(new GridBagLayout());
 		drawPanel.addMouseListener(new MyActionListener(gameOfLifeService, this));
 		jScrollPane.add(drawPanel);
-		splitPaneV.setBottomComponent(new JScrollPane(jScrollPane));
+		jTrueScrollPane = new JScrollPane(jScrollPane);
+		splitPaneV.setBottomComponent(jTrueScrollPane);
 		bNorth.addActionListener(new MyActionListener(gameOfLifeService, this));
 		bWest.addActionListener(new MyActionListener(gameOfLifeService, this));
 		jSliderSize.addChangeListener(new MyActionListener(gameOfLifeService, this));
 		jSliderSpeed.addChangeListener(new MyActionListener(gameOfLifeService, this));
-		timer = new Timer(50, new MyActionListener(gameOfLifeService, this));
+		timer = new Timer(10, new MyActionListener(gameOfLifeService, this));
 		createMenubar();
 		this.setArena(gameOfLifeService.getArena(), gameOfLifeService.getCountGeneration());
-
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.validate();
 		this.pack();
@@ -89,41 +102,44 @@ public class MyJFrame extends JFrame {
 		menuBar = new JMenuBar();
 		menuFile = new JMenu("File");
 		menuEdit = new JMenu("Edit");
+		menuPreferences = new JMenu("Preferences");
 		menuBar.add(menuFile);
 		menuBar.add(menuEdit);
+		menuBar.add(menuPreferences);
 		menuItemNew = new JMenuItem("New");
 		menuItemNew.addActionListener(new MyActionListener(gameOfLifeService, this));
 		menuFile.add(menuItemNew);
-		menuItemOpen = new JMenuItem("Open");
-		menuItemOpen.addActionListener(new MyActionListener(gameOfLifeService, this));
-		menuFile.add(menuItemOpen);
-		menuItemSave = new JMenuItem("Save As");
-		menuItemSave.addActionListener(new MyActionListener(gameOfLifeService, this));
-		menuFile.add(menuItemSave);
-		menuItemImport = new JMenuItem("Import .cell Files");
+		menuItemImport = new JMenuItem("Open");
 		menuItemImport.addActionListener(new MyActionListener(gameOfLifeService, this) );
 		menuFile.add(menuItemImport);
-
+		menuItemExport = new JMenuItem("Save");
+		menuItemExport.addActionListener(new MyActionListener(gameOfLifeService, this) );
+		menuFile.add(menuItemExport);
 		menuItemBackToLastStart = new JMenuItem("Back to last Start");
 		menuItemBackToLastStart.addActionListener(new MyActionListener(gameOfLifeService, this));
 		menuEdit.add(menuItemBackToLastStart);
+		menuItemResizeToFullscreen = new JMenuItem("Enlarge arena to viewport");
+		menuItemResizeToFullscreen.addActionListener(new MyActionListener(gameOfLifeService, this));
+		menuEdit.add(menuItemResizeToFullscreen);
+		menuItemResizeToMinimum = new JMenuItem("Resize arena to minimum");
+		menuItemResizeToMinimum.addActionListener(new MyActionListener(gameOfLifeService, this));
+		menuEdit.add(menuItemResizeToMinimum);
+		menuItemResizeByOpen = new JCheckBoxMenuItem("Enlarge arena to viewport by opening a file");
+		menuItemResizeByOpen.addActionListener(new MyActionListener(gameOfLifeService, this));
+		menuItemResizeByOpen.setSelected(true);
+		menuPreferences.add(menuItemResizeByOpen);
+		
 		this.setJMenuBar(menuBar);
 	}
 
-	public JMenuItem getMenuItemImport() {
-		return menuItemImport;
+
+
+	public JMenuItem getMenuItemResizeToFullscreen() {
+		return menuItemResizeToFullscreen;
 	}
 
-	public void setStartArena(Arena startArena) {
-		this.startArena = startArena;
-	}
-
-	public Arena getStartArena() {
-		return startArena;
-	}
-
-	public JMenuItem getMenuItemBackToLastStart() {
-		return menuItemBackToLastStart;
+	public JMenuItem getMenuItemResizeToMinimum() {
+		return menuItemResizeToMinimum;
 	}
 
 	public void createPanelButtons() {
@@ -134,16 +150,16 @@ public class MyJFrame extends JFrame {
 		bWest = new JButton("step");
 		panelButtons.add(bWest, BorderLayout.WEST);
 		JPanel panelCenter = new JPanel();
-
 		checkBoxTorus = new JCheckBox();
-		checkBoxTorus.setText("make arena a torus");
-		jSliderSpeed = new JSlider(1, 10, 1);
+		checkBoxTorus.setText("arena is a torus");
+		checkBoxTorus.setSelected(true);
+		jSliderSpeed = new JSlider(1, 10, 5);
 		jSliderSpeed.setMajorTickSpacing(1);
 		jSliderSpeed.setMinorTickSpacing(1);
 		jSliderSpeed.createStandardLabels(1);
 		jSliderSpeed.setPaintTicks(true);
 		jSliderSpeed.setPaintLabels(true);
-		jSliderSpeed.setBorder(new TitledBorder("speed factor * 0.05 seconds"));
+		jSliderSpeed.setBorder(new TitledBorder("slow motion(speed factor * 0.05 seconds)"));
 		JPanel jPanelTextfields = new JPanel();
 		jPanelTextfields.setLayout(new BorderLayout());
 		panelCenter.setLayout(new BorderLayout());
@@ -157,7 +173,6 @@ public class MyJFrame extends JFrame {
 	public JButton getbNorth() {
 		return bNorth;
 	}
-
 	public JButton getbWest() {
 		return bWest;
 	}
@@ -178,6 +193,7 @@ public class MyJFrame extends JFrame {
 		return gameOfLifeService;
 	}
 
+
 	public JPanel getjScrollPane() {
 		return jScrollPane;
 	}
@@ -190,32 +206,34 @@ public class MyJFrame extends JFrame {
 		return jSliderSpeed;
 	}
 
+	public JScrollPane getjTrueScrollPane() {
+		return jTrueScrollPane;
+	}
+
+	public JMenuItem getMenuItemBackToLastStart() {
+		return menuItemBackToLastStart;
+	}
+
+	public JMenuItem getMenuItemExport() {
+		return menuItemExport;
+	}
+
+	public JMenuItem getMenuItemImport() {
+		return menuItemImport;
+	}
+
 	public JMenuItem getMenuItemNew() {
 		return menuItemNew;
 	}
 
-	public JMenuItem getMenuItemOpen() {
-		return menuItemOpen;
-	}
-
-	public JMenuItem getMenuItemSave() {
-		return menuItemSave;
+	public Arena getStartArena() {
+		return startArena;
 	}
 
 	public Timer getTimer() {
 		return timer;
 	}
 
-	public void setArena(Arena arena, int count) {
-
-		this.getDrawPanel().getPoints().clear();
-		this.getjScrollPane().setBackground(Color.GRAY);
-		this.getDrawPanel().setBackground(Color.BLACK);
-		this.getDrawPanel().setPoints(arena.getPoints());
-		this.getbWest().setText("step: " + count);
-		this.getDrawPanel().repaint();
-	}
-	
 	public void resizeDrawpanel(Arena arena) {
 		this.getDrawPanel().setSizefactor(this.getjSliderSize().getValue());
 		this.getDrawPanel()
@@ -232,8 +250,21 @@ public class MyJFrame extends JFrame {
 		this.paintAll(this.getGraphics());
 	}
 
+	public void setArena(Arena arena, int count) {
+		this.getDrawPanel().getPoints().clear();
+		this.getjScrollPane().setBackground(Color.GRAY);
+		this.getDrawPanel().setBackground(Color.BLACK);
+		this.getDrawPanel().setPoints(arena.getPoints());
+		this.getbWest().setText("step: " + count);
+		this.getDrawPanel().repaint();
+	}
+	
 	public void setDrawpanel(MyDrawPanel drawpanel) {
 		this.drawPanel = drawpanel;
+	}
+
+	public void setStartArena(Arena startArena) {
+		this.startArena = startArena;
 	}
 
 	public void setTimer(Timer timer) {
