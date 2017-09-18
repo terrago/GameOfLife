@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 
@@ -33,18 +35,20 @@ public class MyJFrame extends JFrame {
 
 	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
+	private JPanel jPanelTextfields;
 	private JPanel jScrollPane,panelButtons;
 	private JSlider jSliderSize,jSliderSpeed;
+	private JTextField jTextfield;
 	private JScrollPane jTrueScrollPane;
 	private JMenuBar menuBar;
 	private JMenu menuFile,menuEdit,menuPreferences;
 	private JMenuItem menuItemNew,menuItemBackToLastStart,menuItemImport,menuItemExport,menuItemResizeToFullscreen,menuItemResizeToMinimum;
 	private JCheckBoxMenuItem menuItemResizeByOpen;
 	private String path;
+
 	private JSplitPane splitPaneH,splitPaneV;
 
 	private Arena startArena;
-
 	private Timer timer;
 
 	public MyJFrame(GameOfLifeService gameOfLifeService) {
@@ -90,6 +94,7 @@ public class MyJFrame extends JFrame {
 		this.setVisible(true);
 		this.repaint();
 	}
+
 	public void createMenubar(){
 		menuBar = new JMenuBar();
 		menuFile = new JMenu("File");
@@ -123,6 +128,7 @@ public class MyJFrame extends JFrame {
 		
 		this.setJMenuBar(menuBar);
 	}
+
 	public void createPanelButtons() {
 		panelButtons = new JPanel();
 		panelButtons.setLayout(new BorderLayout());
@@ -141,8 +147,11 @@ public class MyJFrame extends JFrame {
 		jSliderSpeed.setPaintTicks(true);
 		jSliderSpeed.setPaintLabels(true);
 		jSliderSpeed.setBorder(new TitledBorder("slow motion(speed factor * 0.05 seconds)"));
-		JPanel jPanelTextfields = new JPanel();
+		jPanelTextfields = new JPanel();
 		jPanelTextfields.setLayout(new BorderLayout());
+		jTextfield = new JTextField("Points: ");
+
+		jPanelTextfields.add(jTextfield );
 		panelCenter.setLayout(new BorderLayout());
 		panelCenter.add(jPanelTextfields, BorderLayout.EAST);
 		panelCenter.add(checkBoxTorus, BorderLayout.WEST);
@@ -155,35 +164,41 @@ public class MyJFrame extends JFrame {
 	public JButton getbWest() {
 		return bWest;
 	}
-
 	public JCheckBox getCheckBoxTorus() {
 		return checkBoxTorus;
 	}
-	
 	public JComboBox<String> getComboBox() {
 		return comboBox;
 	}
 
-
-
 	public MyDrawPanel getDrawPanel() {
 		return drawPanel;
 	}
-
+	
 	public GameOfLifeService getGameOfLifeService() {
 		return gameOfLifeService;
+	}
+
+
+
+	public JPanel getjPanelTextfields() {
+		return jPanelTextfields;
 	}
 
 	public JPanel getjScrollPane() {
 		return jScrollPane;
 	}
 
-
 	public JSlider getjSliderSize() {
 		return jSliderSize;
 	}
+
+
 	public JSlider getjSliderSpeed() {
 		return jSliderSpeed;
+	}
+	public JTextField getjTextfield() {
+		return jTextfield;
 	}
 
 	public JScrollPane getjTrueScrollPane() {
@@ -253,6 +268,9 @@ public class MyJFrame extends JFrame {
 
 	public void setArena(Arena arena, int count) {
 		this.getDrawPanel().getPoints().clear();
+		if (count%10==0){
+			this.getjTextfield().setText(" Points: "+arena.getPoints().size());
+		}
 		this.getjScrollPane().setBackground(Color.GRAY);
 		this.getDrawPanel().setBackground(Color.BLACK);
 		this.getDrawPanel().setPoints(arena.getPoints());
