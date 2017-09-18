@@ -58,7 +58,8 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 					newArena(width, height);
 					Rule rule = new Rule(newFileDialog.getjTextFieldRule().getText());
 					gameOfLifeService.setRule(rule);
-					myJFrame.setTitle("Game of Life " + rule);
+					myJFrame.setPath("new File *");
+					myJFrame.setTitle("Game of Life " + gameOfLifeService.getRule() +" " +myJFrame.getPath());
 				}
 			}
 			if (ae.getSource() == myJFrame.getMenuItemBackToLastStart()) {
@@ -117,7 +118,8 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 
 	private void exportCellFile() {
 		JFileChooser c = new JFileChooser();
-		c.setCurrentDirectory(new java.io.File("./resources/cellFiles"));
+		c.setCurrentDirectory(new java.io.File(myJFrame.getPath()));
+		c.setSelectedFile(new java.io.File(myJFrame.getPath()));
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CELL-Files", "cells");
 		c.setFileFilter(filter);
 		BufferedWriter bw = null;
@@ -167,6 +169,8 @@ public class MyActionListener implements ActionListener, ChangeListener, MouseLi
 		BufferedReader in = null;
 		if (c.showOpenDialog(myJFrame) == JFileChooser.APPROVE_OPTION) {
 			try {
+				myJFrame.setPath(c.getSelectedFile().getPath());
+				myJFrame.setTitle("Game of Life " + gameOfLifeService.getRule() +" " +myJFrame.getPath());
 				in = new BufferedReader(new FileReader(c.getSelectedFile().getPath()));
 				String line = null;
 				int lineCounter = 0;

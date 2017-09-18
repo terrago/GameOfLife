@@ -26,10 +26,11 @@ import de.terrago.gol.service.GameOfLifeService;
 public class MyJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-
 	private JButton bNorth,bWest;
 	private JCheckBox checkBoxTorus;
+
 	private JComboBox<String> comboBox;
+
 	private MyDrawPanel drawPanel;
 	private GameOfLifeService gameOfLifeService;
 	private JPanel jScrollPane,panelButtons;
@@ -37,26 +38,18 @@ public class MyJFrame extends JFrame {
 	private JScrollPane jTrueScrollPane;
 	private JMenuBar menuBar;
 	private JMenu menuFile,menuEdit,menuPreferences;
-	public JMenu getMenuPreferences() {
-		return menuPreferences;
-	}
-
-	public void setMenuPreferences(JMenu menuPreferences) {
-		this.menuPreferences = menuPreferences;
-	}
-
-	public JCheckBoxMenuItem getMenuItemResizeByOpen() {
-		return menuItemResizeByOpen;
-	}
-
 	private JMenuItem menuItemNew,menuItemBackToLastStart,menuItemImport,menuItemExport,menuItemResizeToFullscreen,menuItemResizeToMinimum;
 	private JCheckBoxMenuItem menuItemResizeByOpen;
+	private String path;
 	private JSplitPane splitPaneH,splitPaneV;
+
 	private Arena startArena;
+
 	private Timer timer;
 
 	public MyJFrame(GameOfLifeService gameOfLifeService) {
 		this.gameOfLifeService = gameOfLifeService;
+		this.path = "./resources/cellFiles";
 		setTitle("Game of Life");
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
@@ -97,7 +90,6 @@ public class MyJFrame extends JFrame {
 		this.setVisible(true);
 		this.repaint();
 	}
-	
 	public void createMenubar(){
 		menuBar = new JMenuBar();
 		menuFile = new JMenu("File");
@@ -131,17 +123,6 @@ public class MyJFrame extends JFrame {
 		
 		this.setJMenuBar(menuBar);
 	}
-
-
-
-	public JMenuItem getMenuItemResizeToFullscreen() {
-		return menuItemResizeToFullscreen;
-	}
-
-	public JMenuItem getMenuItemResizeToMinimum() {
-		return menuItemResizeToMinimum;
-	}
-
 	public void createPanelButtons() {
 		panelButtons = new JPanel();
 		panelButtons.setLayout(new BorderLayout());
@@ -168,8 +149,6 @@ public class MyJFrame extends JFrame {
 		panelCenter.add(jSliderSpeed, BorderLayout.SOUTH);
 		panelButtons.add(panelCenter, BorderLayout.CENTER);
 	}
-
-
 	public JButton getbNorth() {
 		return bNorth;
 	}
@@ -180,10 +159,12 @@ public class MyJFrame extends JFrame {
 	public JCheckBox getCheckBoxTorus() {
 		return checkBoxTorus;
 	}
-
+	
 	public JComboBox<String> getComboBox() {
 		return comboBox;
 	}
+
+
 
 	public MyDrawPanel getDrawPanel() {
 		return drawPanel;
@@ -193,15 +174,14 @@ public class MyJFrame extends JFrame {
 		return gameOfLifeService;
 	}
 
-
 	public JPanel getjScrollPane() {
 		return jScrollPane;
 	}
 
+
 	public JSlider getjSliderSize() {
 		return jSliderSize;
 	}
-
 	public JSlider getjSliderSpeed() {
 		return jSliderSpeed;
 	}
@@ -222,8 +202,29 @@ public class MyJFrame extends JFrame {
 		return menuItemImport;
 	}
 
+
 	public JMenuItem getMenuItemNew() {
 		return menuItemNew;
+	}
+
+	public JCheckBoxMenuItem getMenuItemResizeByOpen() {
+		return menuItemResizeByOpen;
+	}
+
+	public JMenuItem getMenuItemResizeToFullscreen() {
+		return menuItemResizeToFullscreen;
+	}
+
+	public JMenuItem getMenuItemResizeToMinimum() {
+		return menuItemResizeToMinimum;
+	}
+
+	public JMenu getMenuPreferences() {
+		return menuPreferences;
+	}
+
+	public String getPath() {
+		return path;
 	}
 
 	public Arena getStartArena() {
@@ -258,9 +259,17 @@ public class MyJFrame extends JFrame {
 		this.getbWest().setText("step: " + count);
 		this.getDrawPanel().repaint();
 	}
-	
+
 	public void setDrawpanel(MyDrawPanel drawpanel) {
 		this.drawPanel = drawpanel;
+	}
+
+	public void setMenuPreferences(JMenu menuPreferences) {
+		this.menuPreferences = menuPreferences;
+	}
+	
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public void setStartArena(Arena startArena) {
