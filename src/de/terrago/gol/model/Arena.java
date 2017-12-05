@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Arena implements Serializable {
 
@@ -29,11 +31,7 @@ public class Arena implements Serializable {
 	}
 
 	public Set<Point> getPoints() {
-		Set<Point> points = new HashSet<>();
-		for (Point point : mapPoints.values())
-			points.add(point);
-
-		return points;
+		return  new HashSet<>(mapPoints.values());
 	}
 
 	public int getWidth() {
